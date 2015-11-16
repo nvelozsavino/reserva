@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import User, Place, Reservation
+from .models import User, Reservation
 
 class ReservationInLine(admin.TabularInline):
     model=Reservation
@@ -16,4 +16,4 @@ class UserAdmin(admin.ModelAdmin):
         
 
 admin.site.register(User,UserAdmin)
-admin.site.register(Place)
+# admin.site.register(Place)
