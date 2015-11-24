@@ -21,5 +21,5 @@ class Reservation(models.Model):
         occupied = []
         for reservation in reservations:
             if reservation.paid is True or reservation.reservation_date >= datetime.now() - timedelta(days=1):
-                occupied.append(reservation.date)
+                occupied.append(str(reservation.date))
         return occupied

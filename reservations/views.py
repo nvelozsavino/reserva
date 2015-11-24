@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 # from users.models import WebUser,Address,Email,Phone
 from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404, HttpResponse
 from django.shortcuts import get_object_or_404
+import json
 
 # Create your views here.
 
@@ -53,3 +54,11 @@ def payment(request,reservation_id):
         'reservation':reservation
     }
     return render_to_response('reservations/payment.html',data, context_instance=RequestContext(request))
+
+def getreserveddates(request,month,year):
+    data = {
+        'month':month,
+        'year':year,
+        'json':Reservation.get_ocuped_dates(month,year),
+    }
+    return render_to_response('reservations/getdates.html',data) #json.dumps(Reservation.get_ocuped_dates(month,year))

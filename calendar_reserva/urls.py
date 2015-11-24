@@ -22,7 +22,7 @@ from reservations.forms import UserForm
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^r/', include('reservations.urls')),
+    url(r'^', include('reservations.urls')),
     url(r'^accounts/register/$',  RegistrationView.as_view(form_class=UserForm), name='registration_register'),
     url(r'^accounts/', include('registration.backends.simple.urls')),
 
