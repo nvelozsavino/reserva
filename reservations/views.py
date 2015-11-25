@@ -56,5 +56,6 @@ def payment(request,reservation_id):
     }
     return render_to_response('reservations/payment.html',data, context_instance=RequestContext(request))
 
-def getreserveddates(request,month,year):
-    return JsonResponse(Reservation.get_ocuped_dates(month,year),safe=False)
+def getreserveddates(request):
+    occuped={"used":Reservation.get_ocuped_dates()}
+    return JsonResponse(occuped)

@@ -6,6 +6,6 @@ urlpatterns = patterns('reservations.views',
     url('^new$', 'new',name='reservations_new'),
     url('^payment$', 'payment',name='reservations_payment'),
     url('^payment/(?P<reservation_id>(\d+))/$', 'payment',name='reservation_payment'),
-    url('^getdates/(?P<month>(\d+))-(?P<year>(\d+))/$','getreserveddates',name='reservation_getreserveddates')
+    url('^getdates/$','getreserveddates',name='reservation_getreserveddates')
 
 )
