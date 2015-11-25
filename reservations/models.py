@@ -16,10 +16,11 @@ class Reservation(models.Model):
         return unicode(self.user)
 
     @staticmethod
-    def get_ocuped_dates(month=datetime.now().month, year=datetime.now().year):
+    def get_ocuped_dates(month, year):
         reservations = Reservation.objects.filter(date__gte=datetime.now())
         occupied = []
         for reservation in reservations:
-            if reservation.paid is True or reservation.reservation_date >= datetime.now() - timedelta(days=1):
-                occupied.append(reservation.date)
+
+            if reservation.paid==False and reservation.date.strftime("%m")==month and reservation.date.strftime("%Y")==year:
+                occupied.append(reservation.date.strftime("%Y-%m-%d"))
         return occupied

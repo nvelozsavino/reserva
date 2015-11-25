@@ -5,8 +5,10 @@ from django.template import RequestContext
 from forms import ReservationForm
 from django.core.urlresolvers import reverse
 # from users.models import WebUser,Address,Email,Phone
-from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
+import json
+from datetime import datetime, timedelta
 
 # Create your views here.
 
@@ -53,3 +55,6 @@ def payment(request,reservation_id):
         'reservation':reservation
     }
     return render_to_response('reservations/payment.html',data, context_instance=RequestContext(request))
+
+def getreserveddates(request,month,year):
+    return JsonResponse(Reservation.get_ocuped_dates(month,year),safe=False)
