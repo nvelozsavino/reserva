@@ -20,6 +20,6 @@ class Reservation(models.Model):
         reservations = Reservation.objects.filter(date__gte=datetime.now())
         occupied = []
         for reservation in reservations:
-            if reservation.paid is True or reservation.reservation_date >= datetime.now() - timedelta(days=1):
-                occupied.append(str(reservation.date))
+            if reservation.paid is True and reservation.date.strftime("%m")==month and reservation.date.strftime("%Y")==year:
+                occupied.append(reservation.date.strftime("%Y-%m"))
         return occupied
