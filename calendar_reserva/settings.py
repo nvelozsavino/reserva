@@ -25,6 +25,16 @@ SECRET_KEY = '-5z@@s#&xhi*4nl1u)dqnq=m1_3%fcu%17il7*-fk(g3-77)zh'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
+#STRIPE_SECRET_KEY = os.environ.get(
+#    "STRIPE_SECRET_KEY",
+#    "sk_test_HthF4Hs8I4oGjA39RFdTDwko"
+#)
+#STRIPE_PUBLIC_KEY = os.environ.get(
+#    "STRIPE_PUBLIC_KEY",
+#    "pk_test_LTzee3NEdHl6M7MCaCJWWoch"
+#)
+
 ALLOWED_HOSTS = []
 
 
@@ -39,8 +49,29 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'registration',
     'reservations',
+   # 'payments',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = [
+    "payments.context_processors.payments_settings"
+]
+
+PAYMENTS_PLANS = {
+    "monthly": {
+        "stripe_plan_id": "pro-monthly",
+        "name": "Web App Pro ($25/month)",
+        "description": "The monthly subscription plan to WebApp",
+        "price": 25,
+        "interval": "month"
+    },
+    "yearly": {
+        "stripe_plan_id": "pro-yearly",
+        "name": "Web App Pro ($199/year)",
+        "description": "The annual subscription plan to WebApp",
+        "price": 199,
+        "interval": "year"
+    }
+}
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
