@@ -12,11 +12,12 @@
 	{% csrf_token %}
 	<script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
 		data-key="{{ stripe_key }}"
-		data-amount="{{ reservation.value }}"
+		data-amount="{{ amount }}"
 		data-name="Demo Site"
 		data-description="{{reservation}} (${{ reservation.value }})"
 		data-image="{% static "img/image.png" %}"
 		data-locale="auto">
 	</script>
 </form>
+<a href="{% url 'reservation_info' reservation_id=reservation.pk %}">volver a la info</a> 
 {% endblock %}

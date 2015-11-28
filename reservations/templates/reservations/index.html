@@ -6,7 +6,12 @@
 <ul>
     {% for reservation in reservations %}
         <li>
-            {{ reservation }}
+            {{ reservation }} <a href="{% url 'reservation_info' reservation_id=reservation.pk %}">ver</a> 
+		{% if reservation.paid %}		
+			Pagada 	<a href="{% url 'payment_success' reservation_id=reservation.pk %}">invoice</a>
+		{% else %}
+			<a href="{% url 'reservation_payment' reservation_id=reservation.pk %}">pagar</a>
+		{% endif %}
         </li>
 
     {% endfor %}

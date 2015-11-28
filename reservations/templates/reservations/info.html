@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+    <h1>Payment Success</h1>
+    <h2>Reservation: {{ reservation }}</h2>
+
+	<h3> Reservation Info </h3>
+	<div>Qty: {{rservation.qty }}</div>
+	<div>Date: {{reservation.date}}</div>
+	<div>
+		Status: 
+		{% if reservation.paid %}		
+			Pagada 	<a href="{% url 'payment_success' reservation_id=reservation.pk %}">ver el invoice</a>
+		{% else %}
+			No Pagada. <a href="{% url 'reservation_payment' reservation_id=reservation.pk %}">Pagar ahora</a>
+		{% endif %}
+	</div>
+<a href="{% url 'reservations_index' %}">volver al index</a>
+{% endblock %}

@@ -14,8 +14,7 @@ import stripe
 # Create your views here.
 
 def index(request):
-    reservations= Reservation.objects.all()
-
+    reservations= Reservation.objects.filter(user=request.user)
     data = {'reservations': reservations}
     return render_to_response('reservations/index.html', data, context_instance=RequestContext(request))
 
@@ -52,6 +51,10 @@ def new(request):
 @login_required
 def payment(request,reservation_id):
     reservation= get_object_or_404(Reservation, pk=reservation_id)
+    print request.user
+    print reservation.user
+    if request.user != reservation.user:
+        return HttpResponseForbidden()
     if reservation.paid:
         redirect_url = reverse('reservation_info',kwargs={'reservation_id':reservation.pk})
         return HttpResponseRedirect(redirect_url)       
@@ -59,19 +62,22 @@ def payment(request,reservation_id):
     stripe_key="pk_test_LTzee3NEdHl6M7MCaCJWWoch"
     data={
         'reservation':reservation,
+        'amount':int(reservation.value*100),
         'error_exist': False,
         'error_msg': '',
         'stripe_key': stripe_key,
     }
 
     if request.method == 'POST':
+        print "Method is POST"
         form = PaymentForm(request.POST)
         if form.is_valid():
+            print "Form is valid"
             token = form.cleaned_data['stripeToken']           
             stripe.api_key = "sk_test_HthF4Hs8I4oGjA39RFdTDwko"
             try:
                 charge = stripe.Charge.create(
-                    ammount=reservation.value,
+                    amount=int(reservation.value*100),
                     currency="usd",
                     source=token,
                     description=unicode(reservation)
@@ -80,23 +86,32 @@ def payment(request,reservation_id):
             except stripe.error.CardError,e:
                 card_error=True
                 card_error_msg=unicode(e)
+                print "Error: exception " + unicode(e)
             if card_error is False:
+                print "No Error"
                 reservation.pay(charge)
                 redirect_url = reverse('payment_success',kwargs={'reservation_id':reservation.pk})
                 return HttpResponseRedirect(redirect_url)                 
             else:
+                print "Error"
                 data['error_msg']=card_error_msg
                 data['error_exist']=True
                 return HttpResponse("Error")
+    else:
+        print "Method is not POST"
     return render(request,'reservations/payment.html',data)
 
 @login_required
 def info(request,reservation_id):
     reservation= get_object_or_404(Reservation, pk=reservation_id)
-    return render(request,'reservations/info.html',{'reservation_id': reservation.pk})
+    if request.user != reservation.user:
+        return HttpResponseForbidden()
+    return render(request,'reservations/info.html',{'reservation': reservation})
 
 def payment_success(request, reservation_id):
     reservation= get_object_or_404(Reservation, pk=reservation_id)
+    if request.user != reservation.user:
+        return HttpResponseForbidden()
     data = {'reservation': reservation }
     return render(request,"reservations/payment_success.html",data)
 
