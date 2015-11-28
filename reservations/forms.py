@@ -22,6 +22,19 @@ class ReservationForm(ModelForm):
         self.fields['qty'].max_value=12
         self.fields['qty'].min_value=1
 
+class EditForm(ModelForm):
+    class Meta:
+        model = Reservation
+        fields = ['qty', 'date']
+        widgets = {
+            'date':forms.TextInput(attrs={'class':'datepicker'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(ModelForm, self).__init__(*args, **kwargs)
+        self.fields['qty'].max_value=12
+        self.fields['qty'].min_value=1
+
 class PaymentForm(forms.Form):
     stripeToken = forms.CharField()
     stripeTokenType = forms.CharField()

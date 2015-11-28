@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, render_to_response
 from models import Reservation
 from django.template import RequestContext
-from forms import ReservationForm, PaymentForm
+from forms import ReservationForm, PaymentForm, EditForm
 from django.core.urlresolvers import reverse
 # from users.models import WebUser,Address,Email,Phone
 from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404, HttpResponse, JsonResponse
@@ -46,7 +46,7 @@ def new(request):
             'user': user,
             'form': form,
         }
-        return render_to_response('reservations/new.html', data, context_instance=RequestContext(request))
+        return render(request,'reservations/new.html', data)
 
 @login_required
 def payment(request,reservation_id):
@@ -118,3 +118,41 @@ def payment_success(request, reservation_id):
 def getreserveddates(request):
     occuped={"used":Reservation.get_ocuped_dates()}
     return JsonResponse(occuped)
+
+@login_required
+def edit(request, reservation_id): #TODO la fecha se debe poder dejar igual
+    reservation=get_object_or_404(Reservation,pk=reservation_id)
+    if request.user != reservation.user:
+        return HttpResponseForbidden()
+    if request.method=='POST':
+        form = EditForm(request.POST)
+        if form.is_valid():
+
+            form = EditForm(request.POST, instance=reservation)
+            form.save()
+            redirect_url = reverse('reservation_info',kwargs={'reservation_id':reservation.id})
+            return HttpResponseRedirect(redirect_url)
+        else:
+            data = {
+                'optionaltext':'Form Invalid',
+                'user': request.user,
+                'form': form,
+                'reservation':reservation,
+            }
+            return render(request, "reservations/edit.html", data)
+    else:
+        form = EditForm(instance=reservation)
+        data = {
+            'optionalText':'No POST',
+            'user': request.user,
+            'form': form,
+            'reservation':reservation,
+        }
+        return render(request,"reservations/edit.html",data)
+
+def delete(request, reservation_id):
+    reservation=get_object_or_404(Reservation,pk=reservation_id)
+    if request.user != reservation.user:
+        return HttpResponseForbidden()
+    reservation.delete()
+    return index(request)

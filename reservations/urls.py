@@ -8,6 +8,8 @@ urlpatterns = patterns('reservations.views',
     url('^payment/(?P<reservation_id>(\d+))/$', 'payment',name='reservation_payment'),
     url('^success/(?P<reservation_id>(\d+))/$', 'payment_success',name='payment_success'),
     url('^info/(?P<reservation_id>(\d+))/$', 'info',name='reservation_info'),
+    url('^edit/(?P<reservation_id>(\d+))/$', 'edit', name='reservation_edit'),
+    url('^delete/(?P<reservation_id>(\d+))/$', 'delete', name='reservation_delete'),
     url('^getdates/$','getreserveddates',name='reservation_getreserveddates')
 
 )
