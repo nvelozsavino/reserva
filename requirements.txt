@@ -1,0 +1,5 @@
+Django==1.8.6
+argparse==1.2.1
+django-registration-redux==1.2
+django-sslserver==0.16
+wsgiref==0.1.2
