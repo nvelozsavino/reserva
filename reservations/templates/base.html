@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Title{% endblock %}</title>
+    <link rel="stylesheet" href="{% static "css/jquery-ui.css" %}">
+    <script src="{% static "js/jquery-1.9.1.js" %}"></script>
+    <script src="{% static "js/jquery-ui.js" %}"></script>
+    <script src="{% static "js/functions.js" %}"></script>
     {% block scripts %}{% endblock %}
 </head>
 <body>

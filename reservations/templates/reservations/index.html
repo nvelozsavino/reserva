@@ -7,11 +7,13 @@
     {% for reservation in reservations %}
         <li>
             {{ reservation }} <a href="{% url 'reservation_info' reservation_id=reservation.pk %}">ver</a> 
-		{% if reservation.paid %}		
-			Pagada 	<a href="{% url 'payment_success' reservation_id=reservation.pk %}">invoice</a>
-		{% else %}
-			<a href="{% url 'reservation_payment' reservation_id=reservation.pk %}">pagar</a>
-		{% endif %}
+	        {% if reservation.paid %}		
+		        Pagada 	<a href="{% url 'payment_success' reservation_id=reservation.pk %}">invoice</a>
+	        {% else %}
+		        <a href="{% url 'reservation_payment' reservation_id=reservation.pk %}">pagar</a>
+		        <a href="{% url 'reservation_edit' reservation_id=reservation.pk %}">Editar</a> 
+		        <a href="{% url 'reservation_delete' reservation_id=reservation.pk %}">Eliminar</a>
+	        {% endif %}
         </li>
 
     {% endfor %}

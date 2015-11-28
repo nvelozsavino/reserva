@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class Reservation(models.Model):
     user = models.ForeignKey(User)
-    date = models.DateField(blank=True, null=True, unique=True)
+    date = models.DateField(blank=False, null=True, unique=True)
     qty = models.IntegerField(default=8)
     # place = models.ForeignKey(Place)
     paid = models.BooleanField(default=False)

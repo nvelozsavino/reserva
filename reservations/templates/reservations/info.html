@@ -15,7 +15,9 @@
 		{% else %}
 			No Pagada. <a href="{% url 'reservation_payment' reservation_id=reservation.pk %}">Pagar ahora</a>
             <br/>
-            <a href="{% url 'reservation_edit' reservation_id=reservation.pk %}">Editar</a> <a href="{% url 'reservation_delete' reservation_id=reservation.pk %}">Eliminar</a>
+        <a href="{% url 'reservation_edit' reservation_id=reservation.pk %}">Editar</a> 
+	<br/>
+	<a href="{% url 'reservation_delete' reservation_id=reservation.pk %}">Eliminar</a>
 		{% endif %}
 	</div>
 <a href="{% url 'reservations_index' %}">volver al index</a>

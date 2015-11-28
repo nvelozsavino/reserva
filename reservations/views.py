@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, render_to_response
 from models import Reservation
 from django.template import RequestContext
-from forms import ReservationForm, PaymentForm, EditForm
+from forms import ReservationForm, PaymentForm
 from django.core.urlresolvers import reverse
 # from users.models import WebUser,Address,Email,Phone
 from django.http import HttpResponseRedirect, HttpResponseForbidden, Http404, HttpResponse, JsonResponse
@@ -125,11 +125,13 @@ def edit(request, reservation_id): #TODO la fecha se debe poder dejar igual
     reservation=get_object_or_404(Reservation,pk=reservation_id)
     if request.user != reservation.user:
         return HttpResponseForbidden()
-    if request.method=='POST':
-        form = ReservationForm(request.POST)
-        if form.is_valid():
+    if reservation.paid:
+        return HttpResponseForbidden()
 
-            form = ReservationForm(request.POST, instance=reservation)
+    if request.method=='POST':
+        form = ReservationForm(request.POST, instance=reservation)        
+        if form.is_valid():
+            print "Form valid"
             form.save()
             redirect_url = reverse('reservation_info',kwargs={'reservation_id':reservation.id})
             return HttpResponseRedirect(redirect_url)
@@ -152,9 +154,13 @@ def edit(request, reservation_id): #TODO la fecha se debe poder dejar igual
         }
         return render(request,"reservations/edit.html",data)
 
+
+@login_required
 def delete(request, reservation_id):
     reservation=get_object_or_404(Reservation,pk=reservation_id)
     if request.user != reservation.user:
+        return HttpResponseForbidden()
+    if reservation.paid:
         return HttpResponseForbidden()
     reservation.delete()
     return index(request)
