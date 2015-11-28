@@ -11,7 +11,7 @@
         var lastMonth=0;
 
         $(document).ready(function () {
-            var url='{% url  "reservation_getreserveddates" %}';
+            var url='{% url  "reservation_getreserveddates" reservation_id=0 %}';
             console.log(url);
             $.ajax({
                 url: url,

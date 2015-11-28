@@ -10,6 +10,6 @@ urlpatterns = patterns('reservations.views',
     url('^info/(?P<reservation_id>(\d+))/$', 'info',name='reservation_info'),
     url('^edit/(?P<reservation_id>(\d+))/$', 'edit', name='reservation_edit'),
     url('^delete/(?P<reservation_id>(\d+))/$', 'delete', name='reservation_delete'),
-    url('^getdates/$','getreserveddates',name='reservation_getreserveddates')
+    url('^getdates/(?P<reservation_id>(\d+))/$','getreserveddates',name='reservation_getreserveddates')
 
 )

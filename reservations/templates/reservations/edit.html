@@ -11,7 +11,7 @@
         var lastMonth=0;
 
         $(document).ready(function () {
-            var url='{% url  "reservation_getreserveddates" %}';
+            var url='{% url  "reservation_getreserveddates" reservation_id=reservation.pk %}';
             console.log(url);
             $.ajax({
                 url: url,
@@ -63,7 +63,7 @@
 
 
 <h1>Editar Reservacion</h1>
-    Hola {{ user.first_name }}, llena el formulario para comenzar la reservación<br>
+    Hola {{ user.first_name }}, llena el formulario para comenzar la reservación {{ reservation.pk }}<br>
     {{ optionalText }}
     <form method="post" >
         {% csrf_token %}

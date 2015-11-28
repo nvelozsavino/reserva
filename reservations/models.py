@@ -32,7 +32,7 @@ class Reservation(models.Model):
         self.save()
 
     @staticmethod
-    def get_ocuped_dates(until=0):
+    def get_ocuped_dates(reservation_id=0, until=0):
         now=datetime.now()
         if (until is 0):
             untilDate=now.replace(year=now.year+1)
@@ -42,5 +42,7 @@ class Reservation(models.Model):
         occupied = []
         for reservation in reservations:
             if reservation.paid==True or reservation.reservation_date >= now - timedelta(days=1):
-                occupied.append(reservation.date.strftime("%Y-%m-%d"))
+                print "{0} - {1}".format(reservation.pk, reservation_id)
+                if reservation.pk != reservation_id:
+                    occupied.append(reservation.date.strftime("%Y-%m-%d"))
         return occupied

@@ -115,8 +115,9 @@ def payment_success(request, reservation_id):
     data = {'reservation': reservation }
     return render(request,"reservations/payment_success.html",data)
 
-def getreserveddates(request):
-    occuped={"used":Reservation.get_ocuped_dates()}
+def getreserveddates(request, reservation_id):
+
+    occuped={"used":Reservation.get_ocuped_dates(int(reservation_id))}
     return JsonResponse(occuped)
 
 @login_required
@@ -125,23 +126,24 @@ def edit(request, reservation_id): #TODO la fecha se debe poder dejar igual
     if request.user != reservation.user:
         return HttpResponseForbidden()
     if request.method=='POST':
-        form = EditForm(request.POST)
+        form = ReservationForm(request.POST)
         if form.is_valid():
 
-            form = EditForm(request.POST, instance=reservation)
+            form = ReservationForm(request.POST, instance=reservation)
             form.save()
             redirect_url = reverse('reservation_info',kwargs={'reservation_id':reservation.id})
             return HttpResponseRedirect(redirect_url)
         else:
+
             data = {
-                'optionaltext':'Form Invalid',
+                'optionalText':'Form Invalid',
                 'user': request.user,
                 'form': form,
                 'reservation':reservation,
             }
             return render(request, "reservations/edit.html", data)
     else:
-        form = EditForm(instance=reservation)
+        form = ReservationForm(instance=reservation)
         data = {
             'optionalText':'No POST',
             'user': request.user,
