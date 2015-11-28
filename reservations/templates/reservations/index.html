@@ -4,19 +4,53 @@
 
 <h1>Reservaciones</h1>
 <ul>
-    {% for reservation in reservations %}
-        <li>
-            {{ reservation }} <a href="{% url 'reservation_info' reservation_id=reservation.pk %}">ver</a> 
-	        {% if reservation.paid %}		
-		        Pagada 	<a href="{% url 'payment_success' reservation_id=reservation.pk %}">invoice</a>
-	        {% else %}
-		        <a href="{% url 'reservation_payment' reservation_id=reservation.pk %}">pagar</a>
-		        <a href="{% url 'reservation_edit' reservation_id=reservation.pk %}">Editar</a> 
-		        <a href="{% url 'reservation_delete' reservation_id=reservation.pk %}">Eliminar</a>
-	        {% endif %}
-        </li>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+}
+table tr:nth-child(even) {
+    background-color: #eee;
+}
+table tr:nth-child(odd) {
+   background-color:#fff;
+}
+table th	{
+    background-color: black;
+    color: white;
+}
+</style>
+<table >
+    <tr><th>USER</th><th>Fecha</th><th>Qty</th><th>Status</th><th>Acciones</th></tr>
 
+    {% for reservation in reservations %}
+        <tr>
+            <td>{{ reservation.user.first_name }} {{ reservation.user.last_name }}</td>
+            <td>{{ reservation.date }}</td>
+            <td>{{ reservation.qty }}</td>
+            <td>
+                {% if reservation.paid %}
+                    Pagada
+                {% else %}
+                    Pendiente
+                {% endif %}
+            </td>
+            <td>
+                {% if reservation.paid %}
+                    <a href="{% url 'reservation_info' reservation_id=reservation.pk %}">Ver</a>
+                    <a href="{% url 'payment_success' reservation_id=reservation.pk %}">Invoice</a>
+                {% else %}
+                    <a href="{% url 'reservation_payment' reservation_id=reservation.pk %}">Pagar</a>
+                    <a href="{% url 'reservation_edit' reservation_id=reservation.pk %}">Editar</a>
+                    <a href="{% url 'reservation_delete' reservation_id=reservation.pk %}">Eliminar</a>
+                {% endif %}
+            </td>
+        </tr>
     {% endfor %}
+</table>
 </ul>
 <a href="{% url "reservations_new" %}">nueva</a>
 {% endblock %}

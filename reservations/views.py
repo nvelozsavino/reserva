@@ -121,7 +121,7 @@ def getreserveddates(request, reservation_id):
     return JsonResponse(occuped)
 
 @login_required
-def edit(request, reservation_id): #TODO la fecha se debe poder dejar igual
+def edit(request, reservation_id):
     reservation=get_object_or_404(Reservation,pk=reservation_id)
     if request.user != reservation.user:
         return HttpResponseForbidden()

@@ -4,7 +4,7 @@
 {% block scripts %}
 <script>
     $(document).ready(function(){
-        var url='{% url  "reservation_getreserveddates" reservation_id=0 %}';
+        var url='{% url  "reservation_getreserveddates" reservation_id=reservation.pk %}';
         loadDates(url);
     });
 </script>
