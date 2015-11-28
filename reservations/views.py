@@ -68,7 +68,7 @@ def payment(request,reservation_id):
         form = PaymentForm(request.POST)
         if form.is_valid():
             token = form.cleaned_data['stripeToken']           
-            stripe.api_key = stripe_key #"secret_stripe_key" #TODO: change this to the real secret key
+            stripe.api_key = "sk_test_HthF4Hs8I4oGjA39RFdTDwko"
             try:
                 charge = stripe.Charge.create(
                     ammount=reservation.value,
@@ -87,17 +87,18 @@ def payment(request,reservation_id):
             else:
                 data['error_msg']=card_error_msg
                 data['error_exist']=True
-    return render_to_response('reservations/payment.html',data, context_instance=RequestContext(request))
+                return HttpResponse("Error")
+    return render(request,'reservations/payment.html',data)
 
 @login_required
 def info(request,reservation_id):
     reservation= get_object_or_404(Reservation, pk=reservation_id)
-    return render_to_response('reservations/info.html',{'reservation_id': reservation.pk}, context_instance=RequestContext(request))
+    return render(request,'reservations/info.html',{'reservation_id': reservation.pk})
 
 def payment_success(request, reservation_id):
     reservation= get_object_or_404(Reservation, pk=reservation_id)
     data = {'reservation': reservation }
-    return render_to_response("reservations/payment_success.html",data, context_instance=RequestContext(request))
+    return render(request,"reservations/payment_success.html",data)
 
 def getreserveddates(request):
     occuped={"used":Reservation.get_ocuped_dates()}
