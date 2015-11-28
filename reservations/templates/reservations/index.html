@@ -29,7 +29,7 @@ table th	{
     {% for reservation in reservations %}
         <tr>
             <td>{{ reservation.user.first_name }} {{ reservation.user.last_name }}</td>
-            <td>{{ reservation.date }}</td>
+            <td><a href="{% url 'reservation_info' reservation_id=reservation.pk %}">{{ reservation.date }}</a></td>
             <td>{{ reservation.qty }}</td>
             <td>
                 {% if reservation.paid %}
@@ -40,7 +40,6 @@ table th	{
             </td>
             <td>
                 {% if reservation.paid %}
-                    <a href="{% url 'reservation_info' reservation_id=reservation.pk %}">Ver</a>
                     <a href="{% url 'payment_success' reservation_id=reservation.pk %}">Invoice</a>
                 {% else %}
                     <a href="{% url 'reservation_payment' reservation_id=reservation.pk %}">Pagar</a>

@@ -163,4 +163,5 @@ def delete(request, reservation_id):
     if reservation.paid:
         return HttpResponseForbidden()
     reservation.delete()
-    return index(request)
+    redirect_url = reverse('reservations_index')
+    return HttpResponseRedirect(redirect_url)
