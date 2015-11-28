@@ -50,7 +50,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'registration',
     'reservations',
-   # 'payments',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = [
@@ -85,7 +84,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
 )
 
-ROOT_URLCONF = 'calendar_reserva.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATES = [
     {

@@ -1,5 +1,6 @@
 Django==1.8.6
-argparse==1.2.1
 django-registration-redux==1.2
 django-sslserver==0.16
-wsgiref==0.1.2
+requests==2.8.1
+stripe==1.27.1
+wheel==0.24.0

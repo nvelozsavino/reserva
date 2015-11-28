@@ -27,7 +27,7 @@ class Reservation(models.Model):
 
     def pay(self, confirmation):
         self.paid=True
-        self.payment_confirmation=unicode(confirmation)
+        self.payment_confirmation=confirmation
         self.payment_date=datetime.now()
         self.save()
 

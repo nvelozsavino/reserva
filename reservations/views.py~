@@ -68,7 +68,7 @@ def payment(request,reservation_id):
         form = PaymentForm(request.POST)
         if form.is_valid():
             token = form.cleaned_data['stripeToken']           
-            stripe.api_key = stripe_key #"secret_stripe_key" #TODO: change this to the real secret key
+            stripe.api_key = "secret_stripe_key" #TODO: change this to the real secret key
             try:
                 charge = stripe.Charge.create(
                     ammount=reservation.value,

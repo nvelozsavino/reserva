@@ -14,7 +14,7 @@
 		data-key="{{ stripe_key }}"
 		data-amount="{{ reservation.value }}"
 		data-name="Demo Site"
-		data-description="{{reservation}} (${{ reservation.value }})"
+		data-description="2 widgets (${{ reservation.value }})"
 		data-image="{% static "img/image.png" %}"
 		data-locale="auto">
 	</script>
