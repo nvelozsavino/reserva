@@ -126,7 +126,7 @@ def get_reserved_dates(request, reservation_id):
     return JsonResponse(occuped)
 
 def cancel_pending_reservations(request):
-    cancelled = Reservation.cancel_pending_reservations()
+    cancelled = {"cancelled":Reservation.cancel_pending_reservations()}
     return JsonResponse(cancelled)
 
 @login_required

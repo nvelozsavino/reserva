@@ -45,5 +45,30 @@ function test(date){
     } else {
         return [true,"","free"];
     }
-
 }
+
+$(document).on('click','a',function(event){
+    var url = $(this).attr("data-url");
+    var selector = $(this).attr("data-selector");
+    var where= $(selector);
+    console.log(url);
+    console.log(selector);
+    console.log(where);
+    if (url != undefined && selector !=undefined && where !=undefined){
+        event.preventDefault();
+    } else {
+        return;
+    }
+    $.ajax({
+        url: url,
+        type: "GET",
+        errro: function(){
+            alert("error");
+        },
+        success: function(data){
+            where.html(data);
+        }
+    })
+
+
+});
