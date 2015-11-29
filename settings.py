@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djrill',
     'registration',
     'reservations',
 )
@@ -139,3 +140,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 DEBUG = True
+
+MANDRILL_API_KEY = "F9cmUoquFGarme-UtWJKRQ"
+EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
+DEFAULT_FROM_EMAIL = "nicolas.veloz.savino@gmail.com"

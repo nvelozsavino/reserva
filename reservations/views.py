@@ -10,9 +10,11 @@ from django.shortcuts import get_object_or_404
 import json
 from datetime import datetime, timedelta
 import stripe
+from django.core.mail import send_mail
 
 # Create your views here.
 
+@login_required
 def index(request):
     reservations= Reservation.objects.filter(user=request.user)
     data = {'reservations': reservations}
@@ -51,9 +53,8 @@ def new(request):
 @login_required
 def payment(request,reservation_id):
     reservation= get_object_or_404(Reservation, pk=reservation_id)
-    print request.user
-    print reservation.user
-    if request.user != reservation.user:
+    user= request.user
+    if user != reservation.user:
         return HttpResponseForbidden()
     if reservation.paid:
         redirect_url = reverse('reservation_info',kwargs={'reservation_id':reservation.pk})
@@ -88,15 +89,15 @@ def payment(request,reservation_id):
                 card_error_msg=unicode(e)
                 print "Error: exception " + unicode(e)
             if card_error is False:
-                print "No Error"
-                reservation.pay(charge)
+                print "No Error" 
+                reservation.pay(json.dumps(charge))
+                send_mail('Payment Success', 'Payment success.', 'from@example.com',[user.email], fail_silently=False)
                 redirect_url = reverse('payment_success',kwargs={'reservation_id':reservation.pk})
                 return HttpResponseRedirect(redirect_url)                 
             else:
                 print "Error"
                 data['error_msg']=card_error_msg
                 data['error_exist']=True
-                return HttpResponse("Error")
     else:
         print "Method is not POST"
     return render(request,'reservations/payment.html',data)
@@ -112,7 +113,10 @@ def payment_success(request, reservation_id):
     reservation= get_object_or_404(Reservation, pk=reservation_id)
     if request.user != reservation.user:
         return HttpResponseForbidden()
-    data = {'reservation': reservation }
+
+    payment_info = json.loads(reservation.payment_confirmation)
+    print reservation.qty    
+    data = {'reservation': reservation, 'card': payment_info['source']['brand'], 'last4':payment_info['source']['last4'] }
     return render(request,"reservations/payment_success.html",data)
 
 def getreserveddates(request, reservation_id):
