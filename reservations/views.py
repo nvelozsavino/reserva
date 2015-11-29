@@ -21,34 +21,36 @@ def index(request):
     return render_to_response('reservations/index.html', data, context_instance=RequestContext(request))
 
 @login_required
-def new(request):
+def edit(request, reservation_id=None):
     user = request.user
-    if request.method == 'POST':
-        print ("Post")
-        form = ReservationForm(request.POST)
-        if form.is_valid():
-            reservation=form.save(commit=False)
-            reservation.user=user
-            reservation.save()
-            #jump to payment processing
-            redirect_url = reverse('reservation_payment',kwargs={'reservation_id':reservation.id})
-            return HttpResponseRedirect(redirect_url)
-        else:
-            data = {
-                'user': user,
-                'form': form,
-            }
-            return render(request, 'reservations/new.html', data)
-
+    if reservation_id != None:
+        reservation=get_object_or_404(Reservation,pk=reservation_id)
+        edit=True
     else:
         reservation=Reservation()
         reservation.user=user
-        form = ReservationForm(instance=reservation)
-        data = {
-            'user': user,
-            'form': form,
-        }
-        return render(request,'reservations/new.html', data)
+        edit=False
+    form = ReservationForm(instance=reservation)
+    data = {
+        'user': user,
+        'form': form,
+        'edit': edit,
+        'reservation': reservation,
+    }
+    if request.method == 'POST':
+        form = ReservationForm(request.POST, instance=reservation)
+        print ("Post")
+        if form.is_valid():
+            reservation=form.save(commit=False)
+            reservation.save()
+            #jump to payment processing
+            redirect_url = reverse('reservation_payment',kwargs={'reservation_id':reservation.pk})
+            return HttpResponseRedirect(redirect_url)
+        else:
+            data['form']=form
+            return render(request, 'reservations/edit.html', data)
+    #else:
+    return render(request,'reservations/edit.html', data)
 
 @login_required
 def payment(request,reservation_id):
@@ -119,45 +121,13 @@ def payment_success(request, reservation_id):
     data = {'reservation': reservation, 'card': payment_info['source']['brand'], 'last4':payment_info['source']['last4'] }
     return render(request,"reservations/payment_success.html",data)
 
-def getreserveddates(request, reservation_id):
-
+def get_reserved_dates(request, reservation_id):
     occuped={"used":Reservation.get_ocuped_dates(int(reservation_id))}
     return JsonResponse(occuped)
 
-@login_required
-def edit(request, reservation_id):
-    reservation=get_object_or_404(Reservation,pk=reservation_id)
-    if request.user != reservation.user:
-        return HttpResponseForbidden()
-    if reservation.paid:
-        return HttpResponseForbidden()
-
-    if request.method=='POST':
-        form = ReservationForm(request.POST, instance=reservation)        
-        if form.is_valid():
-            print "Form valid"
-            form.save()
-            redirect_url = reverse('reservation_info',kwargs={'reservation_id':reservation.id})
-            return HttpResponseRedirect(redirect_url)
-        else:
-
-            data = {
-                'optionalText':'Form Invalid',
-                'user': request.user,
-                'form': form,
-                'reservation':reservation,
-            }
-            return render(request, "reservations/edit.html", data)
-    else:
-        form = ReservationForm(instance=reservation)
-        data = {
-            'optionalText':'No POST',
-            'user': request.user,
-            'form': form,
-            'reservation':reservation,
-        }
-        return render(request,"reservations/edit.html",data)
-
+def cancel_pending_reservations(request):
+    cancelled = Reservation.cancel_pending_reservations()
+    return JsonResponse(cancelled)
 
 @login_required
 def delete(request, reservation_id):

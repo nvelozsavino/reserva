@@ -4,7 +4,7 @@
 {% block scripts %}
 <script>
     $(document).ready(function(){
-        var url='{% url  "reservation_getreserveddates" reservation_id=reservation.pk %}';
+        var url='{% url  "reservation_get_reserved_dates" reservation_id=0 %}';
         loadDates(url);
     });
 </script>
@@ -12,26 +12,36 @@
 
 {% block content %}
 
-
-<h1>Editar Reservacion</h1>
-    <div class="col-md-8">
+    {% if edit %}
+        <h1>Editar Reservacion</h1>
+    {% else %}
+        <h1>Crear Reservaciones</h1>
+    {% endif %}
+<div class="col-md-8">
+    <div>
+        Hola {{ user.first_name }}, llena el formulario para
+        {% if edit %}
+            modificar la reservación {{ reservation }}
+        {% else %}
+            comenzar la reservación
+        {% endif %}
+        <form method="post" class="form" >
+            {% csrf_token %}
+            {{ form.as_p }}
+        <br />
         <div>
-            Hola {{ user.first_name }}, llena el formulario para comenzar la reservación {{ reservation.pk }}<br>
-            {{ optionalText }}
-            <form method="post" >
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input type="submit" value="enviar" />
-                <input type="reset" value="clear" />
-            </form>
+            <input class="btn btn-sm" type="submit" value="{% if edit %}Modificar{% else %}Crear{% endif %}" />
+            <input class="btn btn-sm" type="reset" value="clear" />
         </div>
-        <div>
-
-            <br/><a class="btn btn-xs btn-info" role="button" href="{% url "reservation_info" reservation_id=reservation.pk %}">Volver</a>
-        </div>
+        <br />
+        </form>
+    </div>
+    <div>
+        {% if edit %}
+            <a class="btn btn-xs btn-info" role="button" href="{% url "reservation_info" reservation_id=reservation.pk %}">Volver a la reserva</a>
+        {% endif %}
+        <a class="btn btn-xs btn-info" role="button" href="{% url "reservations_index" %}">Volver al index</a>
+    </div>
 </div>
-
-
-
 
 {% endblock %}

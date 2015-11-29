@@ -1,18 +1,24 @@
+# -*- coding: utf-8 *-*
 from django.db import models
 from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 
 
 class Reservation(models.Model):
-    user = models.ForeignKey(User)
-    date = models.DateField(blank=False, null=True, unique=True)
-    qty = models.IntegerField(default=8)
+    RESERVATION_STATUS_CHOICES = (
+        ('N', u'Pendiente'),
+        ('P', u'Pagado'),
+        ('C', u'Cancelado'),
+    )
+    user = models.ForeignKey(User, verbose_name=u'Usuario')
+    date = models.DateField(blank=False, null=True, unique=True, verbose_name=u'Fecha del viaje')
+    qty = models.IntegerField(default=8, verbose_name=u'Cantidad de personas')
     # place = models.ForeignKey(Place)
-    status = models.CharField(max_length=1, default='N')
-    value = models.FloatField(null=True, blank=True)
-    reservation_date = models.DateTimeField(auto_now=True)
-    payment_date = models.DateTimeField(null=True, blank=True)
-    payment_confirmation = models.CharField(null=True, blank=True, max_length=200)
+    status = models.CharField(max_length=1, choices=RESERVATION_STATUS_CHOICES, default='N', verbose_name=u'Status')
+    value = models.FloatField(null=True, blank=True, verbose_name=u'Precio')
+    reservation_date = models.DateTimeField(auto_now=True, verbose_name=u'Fecha de creación')
+    payment_date = models.DateTimeField(null=True, blank=True, verbose_name=u'Fecha del pago')
+    payment_confirmation = models.CharField(null=True, blank=True, max_length=200, verbose_name=u'Confirmación de pago')
 
     def __unicode__(self):
         return unicode(self.user.get_full_name()) + " (" + unicode(self.date) + ") - " + unicode(self.qty)
@@ -26,10 +32,23 @@ class Reservation(models.Model):
         super(Reservation, self).save(*args, **kwargs)
 
     def pay(self, confirmation):
+        if self.status != 'N':
+            return False
         self.status='P'
-        self.payment_confirmation=unicode(confirmation)
+        self.payment_confirmation=confirmation
         self.payment_date=datetime.now()
+        self.send_payment_mail()
         self.save()
+        return True
+
+    def cancel(self):
+        if self.status != 'N':
+            return False
+        self.status = 'C'
+        self.save()
+        self.send_cancel_mail()
+        return True
+
 
     @staticmethod
     def get_ocuped_dates(reservation_id=0, until=0):
@@ -41,8 +60,19 @@ class Reservation(models.Model):
         reservations = Reservation.objects.filter(date__gte=now, date__lte=untilDate)
         occupied = []
         for reservation in reservations:
-            if reservation.status=='P' or reservation.reservation_date >= now - timedelta(days=1):
+            if reservation.status=='P' or reservation.reservation_date > now - timedelta(days=1,seconds=3600):
                 print "{0} - {1}".format(reservation.pk, reservation_id)
                 if reservation.pk != reservation_id:
                     occupied.append(reservation.date.strftime("%Y-%m-%d"))
         return occupied
+
+    @staticmethod
+    def cancel_pending_reservations():
+        expired_time=datetime.now()-timedelta(days=1, seconds=3600)
+        pending_reservations = Reservation.objects.filter(reservation_date__lte=expired_time)
+        cancelled = []
+        for reservation in pending_reservations:
+            result = reservation.cancel()
+            cancelled.append((reservation, result))
+        return cancelled
+
