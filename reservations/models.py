@@ -8,7 +8,7 @@ class Reservation(models.Model):
     date = models.DateField(blank=False, null=True, unique=True)
     qty = models.IntegerField(default=8)
     # place = models.ForeignKey(Place)
-    paid = models.BooleanField(default=False)
+    status = models.CharField(max_length=1, default='N')
     value = models.FloatField(null=True, blank=True)
     reservation_date = models.DateTimeField(auto_now=True)
     payment_date = models.DateTimeField(null=True, blank=True)
@@ -18,7 +18,7 @@ class Reservation(models.Model):
         return unicode(self.user.get_full_name()) + " (" + unicode(self.date) + ") - " + unicode(self.qty)
 
     def save(self, *args, **kwargs): 
-        if self.paid is False:
+        if self.status != 'P':
             if self.qty<=8:
                 self.value=2000
             else:
@@ -26,7 +26,7 @@ class Reservation(models.Model):
         super(Reservation, self).save(*args, **kwargs)
 
     def pay(self, confirmation):
-        self.paid=True
+        self.status='P'
         self.payment_confirmation=unicode(confirmation)
         self.payment_date=datetime.now()
         self.save()
@@ -41,7 +41,7 @@ class Reservation(models.Model):
         reservations = Reservation.objects.filter(date__gte=now, date__lte=untilDate)
         occupied = []
         for reservation in reservations:
-            if reservation.paid==True or reservation.reservation_date >= now - timedelta(days=1):
+            if reservation.status=='P' or reservation.reservation_date >= now - timedelta(days=1):
                 print "{0} - {1}".format(reservation.pk, reservation_id)
                 if reservation.pk != reservation_id:
                     occupied.append(reservation.date.strftime("%Y-%m-%d"))

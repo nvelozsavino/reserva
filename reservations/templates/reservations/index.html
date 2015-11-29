@@ -4,6 +4,7 @@
 
 <h1>Reservaciones</h1>
 Hola {{user.first_name }}
+    <br/>
 <div class="col-md-8">
     <table class="table table-striped">
         <thead>
@@ -21,15 +22,17 @@ Hola {{user.first_name }}
                 <td><a href="{% url 'reservation_info' reservation_id=reservation.pk %}">{{ reservation.date }}</a></td>
                 <td>{{ reservation.qty }}</td>
                 <td>
-                    {% if reservation.paid %}
+                    {% if reservation.status == 'P' %}
                         Pagada
-                    {% else %}
+                    {% elif reservation.status == 'N'%}
                         Pendiente
+                    {% else %}
+                        Cancelada
                     {% endif %}
                 </td>
                 <td>
-                </div>
-                    {% if reservation.paid %}
+
+                    {% if reservation.status == 'P' %}
                         <a class="btn btn-xs btn-info" role="button" href="{% url 'payment_success' reservation_id=reservation.pk %}">Invoice</a>
                     {% else %}
                         <a class="btn btn-xs btn-primary" role="button" href="{% url 'reservation_payment' reservation_id=reservation.pk %}">Pagar</a>
@@ -43,6 +46,6 @@ Hola {{user.first_name }}
     </table>
 </div>
 <div class="col-md-4">
-    <a class="btn btn-primary" role="button" href="{% url "reservations_new" %}">nueva</a>
+    <a class="btn btn-primary" role="button" href="{% url "reservations_new" %}">Nueva Reservación</a>
 </div>
 {% endblock %}

@@ -14,15 +14,24 @@
 
 
 <h1>Editar Reservacion</h1>
-    Hola {{ user.first_name }}, llena el formulario para comenzar la reservación {{ reservation.pk }}<br>
-    {{ optionalText }}
-    <form method="post" >
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="enviar" />
-        <input type="reset" value="clear" />
-    </form>
-    <a href="{% url "reservation_info" reservation_id=reservation.pk %}">Volver</a>
+    <div class="col-md-8">
+        <div>
+            Hola {{ user.first_name }}, llena el formulario para comenzar la reservación {{ reservation.pk }}<br>
+            {{ optionalText }}
+            <form method="post" >
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="enviar" />
+                <input type="reset" value="clear" />
+            </form>
+        </div>
+        <div>
+
+            <br/><a class="btn btn-xs btn-info" role="button" href="{% url "reservation_info" reservation_id=reservation.pk %}">Volver</a>
+        </div>
+</div>
+
+
 
 
 {% endblock %}

@@ -14,16 +14,20 @@
 
 
 <h1>Crear Reservaciones</h1>
-    Hola {{ user.first_name }}, llena el formulario para comenzar la reservación
-    <form method="post" >
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="enviar" />
-        <input type="reset" value="clear" />
-    </form>
-    <a href="{% url "reservations_new" %}">nueva</a>
-    <br>
-    <a href="{% url "reservations_index" %}">Volver</a>
-
+<div class="col-md-8">
+    <div>
+        Hola {{ user.first_name }}, llena el formulario para comenzar la reservación
+        <form method="post" >
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="enviar" />
+            <input type="reset" value="clear" />
+        </form>
+    </div>
+    <div>
+        <br>
+        <a class="btn btn-xs btn-info" role="button" href="{% url "reservations_index" %}">Volver</a>
+    </div>
+</div>
 
 {% endblock %}

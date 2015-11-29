@@ -56,7 +56,7 @@ def payment(request,reservation_id):
     user= request.user
     if user != reservation.user:
         return HttpResponseForbidden()
-    if reservation.paid:
+    if reservation.status=='P':
         redirect_url = reverse('reservation_info',kwargs={'reservation_id':reservation.pk})
         return HttpResponseRedirect(redirect_url)       
 

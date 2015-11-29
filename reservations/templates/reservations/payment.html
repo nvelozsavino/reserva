@@ -4,7 +4,8 @@
 
     <h1>Payment</h1>
     <h2>Reservation: {{ reservation }}</h2>
-    {{ reservation.value }}
+    <div class="col-md-8"><div>
+    {{ reservation.value }} USD
     {% if error_exist %}
     <div class="error">Error: {{ error_msg }} </div>
     {% endif %}
@@ -19,5 +20,11 @@
 		data-locale="auto">
 	</script>
 </form>
-<a href="{% url 'reservation_info' reservation_id=reservation.pk %}">volver a la info</a> 
+    </div>
+    <div>
+        <br/>
+<a class="btn btn-xs btn-warning" role="button" href="{% url 'reservation_info' reservation_id=reservation.pk %}">Pagar Luego</a>
+    </div>
+
+    </div>
 {% endblock %}
