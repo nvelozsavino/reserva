@@ -35,7 +35,10 @@ DEBUG = True
 #    "pk_test_LTzee3NEdHl6M7MCaCJWWoch"
 #)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost', # Allow domain and subdomains
+    '.pocotopocopo.com', # Also allow FQDN and subdomains
+]
 
 # secure proxy SSL header and secure cookies
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
