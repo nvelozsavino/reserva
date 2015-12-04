@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 import json
 from datetime import datetime, timedelta
 import stripe
-from django.core.mail import send_mail
+
 
 # Create your views here.
 
@@ -93,7 +93,6 @@ def payment(request,reservation_id):
             if card_error is False:
                 print "No Error" 
                 reservation.pay(json.dumps(charge))
-                send_mail('Payment Success', 'Payment success.', 'from@example.com',[user.email], fail_silently=False)
                 redirect_url = reverse('payment_success',kwargs={'reservation_id':reservation.pk})
                 return HttpResponseRedirect(redirect_url)                 
             else:

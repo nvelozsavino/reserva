@@ -2,7 +2,7 @@
 from django.db import models
 from datetime import datetime, timedelta
 from django.contrib.auth.models import User
-
+from django.core.mail import send_mail
 
 class Reservation(models.Model):
     RESERVATION_STATUS_CHOICES = (
@@ -48,6 +48,12 @@ class Reservation(models.Model):
         self.save()
         self.send_cancel_mail()
         return True
+
+    def send_payment_mail(self):
+        send_mail('Payment Success', 'Payment success.', 'no-replay@pocotopocopo.com',[user.email], fail_silently=False)
+
+    def send_cancel_mail(self):
+        send_mail('Payment Cancelled', 'Payment cancelled.', 'no-replay@pocotopocopo.com',[user.email], fail_silently=False)
 
 
     @staticmethod
