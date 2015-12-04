@@ -50,10 +50,10 @@ class Reservation(models.Model):
         return True
 
     def send_payment_mail(self):
-        send_mail('Payment Success', 'Payment success.', 'no-replay@pocotopocopo.com',[user.email], fail_silently=False)
+        send_mail('Payment Success', 'Payment success.', 'no-replay@pocotopocopo.com',[self.user.email], fail_silently=False)
 
     def send_cancel_mail(self):
-        send_mail('Payment Cancelled', 'Payment cancelled.', 'no-replay@pocotopocopo.com',[user.email], fail_silently=False)
+        send_mail('Payment Cancelled', 'Payment cancelled.', 'no-replay@pocotopocopo.com',[self.user.email], fail_silently=False)
 
 
     @staticmethod
