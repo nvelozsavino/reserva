@@ -1,5 +1,5 @@
 """
-WSGI config for calendar_reserva project.
+WSGI config for reserva project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
