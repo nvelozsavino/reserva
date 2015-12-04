@@ -62,7 +62,7 @@ $(document).on('click','a',function(event){
     $.ajax({
         url: url,
         type: "GET",
-        errro: function(){
+        error: function(){
             alert("error");
         },
         success: function(data){

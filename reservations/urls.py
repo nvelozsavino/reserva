@@ -11,6 +11,7 @@ urlpatterns = patterns('reservations.views',
     url('^edit/(?P<reservation_id>(\d+))/$', 'edit', name='reservation_edit'),
     url('^delete/(?P<reservation_id>(\d+))/$', 'delete', name='reservation_delete'),
     url('^getdates/(?P<reservation_id>(\d+))/$','get_reserved_dates',name='reservation_get_reserved_dates'),
-    url('^cancel_pending/$','cancel_pending_reservations',name='reservation_cancel_pending')
+    url('^cancel_pending/$','cancel_pending_reservations',name='reservation_cancel_pending'),
+
 
 )
