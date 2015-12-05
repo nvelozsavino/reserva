@@ -34,8 +34,8 @@ def login_user(request):
 def index(request):
     login_user(request)
     redirect_to = request.REQUEST.get('next', '')
-    data={}
-    data['logged']= request.user.is_authenticated()
+    #data={}
+    #data['logged']= request.user.is_authenticated()
     if request.user.is_authenticated():
         if redirect_to !="":
             return HttpResponseRedirect(redirect_to)
@@ -43,7 +43,7 @@ def index(request):
        # return redirect('%s?next=%s' % (settings.LOGIN_URL, request.path))
             return HttpResponseRedirect(reverse('reservations_list'))
 
-    return render(request, 'reservations/index.html', data)
+    return render(request, 'reservations/index.html')
 
 def logout_user(request):
     logout(request)
@@ -54,7 +54,7 @@ def logout_user(request):
 @login_required(login_url='reservations_index')
 def reservation_list(request):
     data={}
-    data['logged']= request.user.is_authenticated()
+    #data['logged']= request.user.is_authenticated()
     reservations= Reservation.objects.filter(user=request.user)
     data ['reservations']= reservations
     return render(request, 'reservations/reservation_list.html', data)
@@ -64,6 +64,8 @@ def edit(request, reservation_id=None):
     user = request.user
     if reservation_id != None:
         reservation=get_object_or_404(Reservation,pk=reservation_id)
+        if reservation.user !=user:
+            return HttpResponseForbidden()
         edit=True
     else:
         reservation=Reservation()
@@ -76,7 +78,7 @@ def edit(request, reservation_id=None):
         'edit': edit,
         'reservation': reservation,
     }
-    data['logged']= request.user.is_authenticated()
+    #data['logged']= request.user.is_authenticated()
     if request.method == 'POST':
         form = ReservationForm(request.POST, instance=reservation)
         print ("Post")
@@ -110,7 +112,7 @@ def payment(request,reservation_id):
         'error_msg': '',
         'stripe_key': stripe_key,
     }
-    data['logged']= request.user.is_authenticated()
+    #data['logged']= request.user.is_authenticated()
     if request.method == 'POST':
         print "Method is POST"
         form = PaymentForm(request.POST)
@@ -146,7 +148,7 @@ def payment(request,reservation_id):
 @login_required
 def info(request,reservation_id):
     data={}
-    data['logged']= request.user.is_authenticated()
+    #data['logged']= request.user.is_authenticated()
 
 
     reservation= get_object_or_404(Reservation, pk=reservation_id)
@@ -163,7 +165,7 @@ def payment_success(request, reservation_id):
     payment_info = json.loads(reservation.payment_confirmation)
     print reservation.qty    
     data = {'reservation': reservation, 'card': payment_info['source']['brand'], 'last4':payment_info['source']['last4'] }
-    data['logged']= request.user.is_authenticated()
+    #data['logged']= request.user.is_authenticated()
     return render(request,"reservations/payment_success.html",data)
 
 def get_reserved_dates(request, reservation_id):
@@ -179,7 +181,7 @@ def delete(request, reservation_id):
     reservation=get_object_or_404(Reservation,pk=reservation_id)
     if request.user != reservation.user:
         return HttpResponseForbidden()
-    if reservation.paid:
+    if reservation.status=='P':
         return HttpResponseForbidden()
     reservation.delete()
     redirect_url = reverse('reservations_index')

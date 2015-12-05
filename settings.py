@@ -67,9 +67,7 @@ INSTALLED_APPS = (
     'reservations',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = [
-    "payments.context_processors.payments_settings"
-]
+
 
 PAYMENTS_PLANS = {
     "monthly": {
@@ -105,19 +103,25 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ['reservations/templates/reservations',
-                 'reservations/templates/registration',
                  ],
         'APP_DIRS': True,
+
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
         },
+
     },
 ]
+
+TEMPLATE_CONTEXT_PROCESSORS = [
+    'payments.context_processors.payments_settings',
+    ]
 
 WSGI_APPLICATION = 'wsgi.application'
 
