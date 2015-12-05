@@ -25,6 +25,8 @@ def edit(request, reservation_id=None):
     user = request.user
     if reservation_id != None:
         reservation=get_object_or_404(Reservation,pk=reservation_id)
+        if user != reservation.user:
+            return HttpResponseForbidden()
         edit=True
     else:
         reservation=Reservation()

@@ -3,6 +3,7 @@ from django.db import models
 from datetime import datetime, timedelta
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
+from utils import send_html_email
 
 class Reservation(models.Model):
     RESERVATION_STATUS_CHOICES = (
@@ -50,11 +51,20 @@ class Reservation(models.Model):
         return True
 
     def send_payment_mail(self):
-        send_mail('Payment Success', 'Payment success.', 'no-replay@pocotopocopo.com',[self.user.email], fail_silently=False)
+        subject = u'Payment Success ' + unicode (self.date)
+        from_email = 'no-reply@pocotopocopo.com'
+        to = self.user.email
+        template = 'email/payment_confirmation.html'
+        variables = {'reservation':self,}
+        send_html_email(subject, from_email, to, template, variables)
 
     def send_cancel_mail(self):
-        send_mail('Payment Cancelled', 'Payment cancelled.', 'no-replay@pocotopocopo.com',[self.user.email], fail_silently=False)
-
+        subject = u'Reservation Cancelled ' + unicode (self.date)
+        from_email = 'no-reply@pocotopocopo.com'
+        to = self.user.email
+        template = 'email/cancelation.html'
+        variables = {'reservation':self,}
+        send_html_email(subject, from_email, to, template, variables)
 
     @staticmethod
     def get_ocuped_dates(reservation_id=0, until=0):

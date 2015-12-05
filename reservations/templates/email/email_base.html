@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  	<!-- Facebook sharing information tags -->
+	<meta property="og:title" content="{% block ogtitle %}{% endblock %}" />
+	<title>{% block title %}{% endblock %}</title>
+	<style>
+		#outlook a{padding:0;} /* Force Outlook to provide a "view in browser" button. */
+		body{width:100% !important;} .ReadMsgBody{width:100%;} .ExternalClass{width:100%;} /* Force Hotmail to display emails at full width */
+   		body{-webkit-text-size-adjust:none;} /* Prevent Webkit platforms from changing default text sizes. */
+		html, body {
+			font-family: Arial, Helvetica, sans-serif;
+			font-size:14px;
+			margin: 0;
+			padding: 0;
+			height: 100%;
+			background: #CAFEFF;
+		}
+	   #backgroundTable{height:100% !important; margin:0; padding:0; width:100% !important;}
+	   /* Template Styles */
+	   /* /\/\/\/\/\/\/\/\/\/\ STANDARD STYLING: COMMON PAGE ELEMENTS /\/\/\/\/\/\/\/\/\/\ */
+	   /**
+	   * @tab Page
+	   * @section background color
+	   * @tip Set the background color for your email. You may want to choose one that matches your company's branding.
+	   * @theme page
+	   */
+	   body, #backgroundTable{
+	    /*@editable*/ background-color:#CAFEFF;
+	   }
+		#templateContainer{
+			background: #CAFEFF;
+		}
+
+		.content {
+			background: #CAFEFF;
+		}
+
+		#container {
+		   min-height:100%;
+		   height:100%;
+		   height: auto !important;
+		   position: relative;
+		   margin-bottom:-144px;   /* Negative height of the footer */
+		   width:100%;
+
+		}
+		#header {
+		   padding:0px;
+		}
+		#body {
+		   padding-left:10px;
+		   padding-right:10px;
+		}
+		#push {
+		   height:144px;   /* This height is the same as footer and is used to push footer bellow, not to see body content bellow footer. */
+		}
+		#footer {
+		   position:relative;
+		   width:100%;
+		   height:144px;   /* Height of the footer */
+
+		}
+
+		.centered {
+			text-align:center;
+		}
+		h1 {
+			padding-bottom : 10px;
+		}
+
+
+	</style>
+
+</head>
+<body leftmargin="0" marginwidth="0" topmargin="0" marginheight="0" offset="0">
+<table border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="backgroundTable">
+	<tr>
+		<td align="center" valign="top">
+      {# Begin Template Preheader #}
+      <table border="0" cellpadding="10" cellspacing="0" width="600" id="templatePreheader">
+       <tr>
+        <td valign="top" class="preheaderContent">
+
+         {# Begin Module: Standard Preheader #}
+         <table border="0" cellpadding="10" cellspacing="0" width="100%">
+          <tr>
+           <td valign="top">
+            <div mc:edit="std_preheader_content">
+              {# {% block teaser %}Boda de ana marian y nico.{% endblock %} #}
+            </div>
+           </td>
+           <!-- *|IFNOT:ARCHIVE_PAGE|* -->
+           <td valign="top" width="190">
+            <div mc:edit="std_preheader_links">
+             {# ¿Este email no se muestra correctamente?<br /><a href="*|ARCHIVE|*" target="_blank">Ver en el navegador</a>. #}
+            </div>
+           </td>
+           <!-- *|END:IF|* -->
+          </tr>
+         </table>
+         {# End Module: Standard Preheader #}
+        </td>
+       </tr>
+      </table>
+      {# End Template Preheader #}
+			{# Begin Template Container #}
+			<table border="0" cellpadding="0" cellspacing="0" width="800"  bgcolor="#CAFEFF" id="templateContainer">
+				<tr>
+					<td class="content">
+						<div id="container" align="center">
+							<div id="header">
+								<img src='{{STATIC_URL}}imgs/banner.png' />
+						    </div>
+						    <div id="body" align="center">
+						    	{% block content %}{% endblock %}
+						    </div>
+						    <div id="push">
+						    </div>
+						</div>
+						<div id="footer" align="center">
+							<img src='{{STATIC_URL}}imgs/banner-grama.png' />
+						</div>
+					</td>
+				</tr>
+			</table>
+			{# End Template Container #}
+		</td>
+	</tr>
+</table>
+</body>
+</html>
