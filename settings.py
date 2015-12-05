@@ -104,7 +104,9 @@ ROOT_URLCONF = 'urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['reservations/templates/reservations',
+                 'reservations/templates/registration',
+                 ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

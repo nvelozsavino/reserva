@@ -1,53 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
+Tiene que estar registrado para acceder al modulo de reservas
 
-<h1>Reservaciones</h1>
-Hola {{user.first_name }}
-    <br/>
-<div class="row">
-    <div class="col-md-8">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Qty</th>
-                    <th>Status</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-
-            <tbody>
-            {% for reservation in reservations %}
-                <tr>
-                    <td><a href="{% url 'reservation_info' reservation_id=reservation.pk %}">{{ reservation.date }}</a></td>
-                    <td>{{ reservation.qty }}</td>
-                    <td>
-                        {% if reservation.status == 'P' %}
-                            Pagada
-                        {% elif reservation.status == 'N'%}
-                            Pendiente
-                        {% else %}
-                            Cancelada
-                        {% endif %}
-                    </td>
-                    <td>
-
-                        {% if reservation.status == 'P' %}
-                            <a class="btn btn-xs btn-info" role="button" href="{% url 'payment_success' reservation_id=reservation.pk %}">Invoice</a>
-                        {% else %}
-                            <a class="btn btn-xs btn-primary" role="button" href="{% url 'reservation_payment' reservation_id=reservation.pk %}">Pagar</a>
-                            <a class="btn btn-xs btn-warning" role="button" href="{% url 'reservation_edit' reservation_id=reservation.pk %}">Editar</a>
-                            <a class="btn btn-xs btn-danger" role="button" href="{% url 'reservation_delete' reservation_id=reservation.pk %}">Eliminar</a>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="col-md-4">
-        <a class="btn btn-primary" role="button" href="{% url "reservations_new" %}">Nueva Reservación</a>
-    </div>
-</div>
 {% endblock %}

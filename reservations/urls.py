@@ -3,6 +3,7 @@ from django.conf.urls import patterns, url
 
 urlpatterns = patterns('reservations.views',
     url('^$', 'index',name='reservations_index'),
+    url('^reservation_list$', 'reservation_list',name='reservations_list'),
     url('^new$', 'edit',name='reservations_new'),
     url('^payment$', 'payment',name='reservations_payment'),
     url('^payment/(?P<reservation_id>(\d+))/$', 'payment',name='reservation_payment'),
@@ -12,6 +13,8 @@ urlpatterns = patterns('reservations.views',
     url('^delete/(?P<reservation_id>(\d+))/$', 'delete', name='reservation_delete'),
     url('^getdates/(?P<reservation_id>(\d+))/$','get_reserved_dates',name='reservation_get_reserved_dates'),
     url('^cancel_pending/$','cancel_pending_reservations',name='reservation_cancel_pending'),
+    url('^login$','login_user', name='login'),
+    url('^logout$', 'logout_user', name='logout')
 
 
 )
