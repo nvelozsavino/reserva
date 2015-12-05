@@ -1,14 +1,12 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load reservations_tags %}
 {% block content %}
 
     <h1>View Reservation</h1>
 
-        <h2>Reservation: {{ reservation }}</h2>
 
-        <h3> Reservation Info </h3>
-        <div>Qty: {{ reservation.qty }}</div>
-        <div>Fecha: {{ reservation.date }}</div>
+        {% info_tag reservation %}
 
         <div>Status:
             {% if reservation.status == 'P' %}
@@ -27,5 +25,5 @@
 
 
 		{% endif %}
-    <div><br/><a class="btn btn-xs btn-info" role="button" href="{% url 'reservations_index' %}">Volver</a></div>
+    <div><br/><a class="btn btn-xs btn-info" role="button" href="{% url 'reservations_list' %}">Volver</a></div>
 {% endblock %}

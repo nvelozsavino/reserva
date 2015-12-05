@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load reservations_tags %}
 {% block content %}
 
     <h1>Payment Success</h1>
-    <h2>Reservation: {{ reservation }}</h2>
-	<h3> Reservation Info </h3>
-	<div>Qty: {{reservation.qty }}</div>
-	<div>Date: {{reservation.date}}</div>
+    <h2>Reservation:</h2>
+
+	{% info_tag reservation %}
+
 	<h3> Payment Info </h3>
 	<div>Payment Date: {{reservation.payment_date}}</div>
 	<div>Amount: {{reservation.value }}</div>

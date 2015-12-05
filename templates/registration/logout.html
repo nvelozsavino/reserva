@@ -1,0 +1,8 @@
+{% extends "registration/registration_base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Logged out" %}{% endblock %}
+
+{% block content %}
+<p>{% trans "Successfully logged out" %}. Click <a href="{% url 'index' %}">here</a> to go to the index page</p>
+{% endblock %}

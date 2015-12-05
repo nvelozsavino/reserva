@@ -1,8 +1,16 @@
 {% extends "email/email_base.html" %}
+{% load reservations_tags %}
 {% block ogtitle %}{% endblock %}
 {% block title %}{% endblock %}
 {% block content %}
 <div align="center">
 	Confirmation
 </div>
+<h2>Reservation:</h2>
+{% info_tag reservation %}
+
+<h3> Payment Info </h3>
+<div>Payment Date: {{reservation.payment_date}}</div>
+<div>Amount: {{reservation.value }}</div>
+<div>Card: {{card}} ending in {{last4}}</div>
 {% endblock %}

@@ -10,22 +10,30 @@ from django.shortcuts import get_object_or_404
 import json
 from datetime import datetime, timedelta
 import stripe
+from django import template
+
+register = template.Library()
 
 
 # Create your views here.
 
-@login_required
 def index(request):
+    return render(request, 'reservations/index.html')
+
+@login_required
+def reservation_list(request):
+    Reservation.cancel_pending_reservations(user=request.user)
     reservations= Reservation.objects.filter(user=request.user)
     data = {'reservations': reservations}
-    return render_to_response('reservations/index.html', data, context_instance=RequestContext(request))
+    return render(request, 'reservations/reservation_list.html', data)
 
 @login_required
 def edit(request, reservation_id=None):
+    Reservation.cancel_pending_reservations(user=request.user)
     user = request.user
     if reservation_id != None:
         reservation=get_object_or_404(Reservation,pk=reservation_id)
-        if user != reservation.user:
+        if reservation.user !=user or reservation.is_cancelled():
             return HttpResponseForbidden()
         edit=True
     else:
@@ -58,9 +66,9 @@ def edit(request, reservation_id=None):
 def payment(request,reservation_id):
     reservation= get_object_or_404(Reservation, pk=reservation_id)
     user= request.user
-    if user != reservation.user:
+    if user != reservation.user or reservation.is_cancelled():
         return HttpResponseForbidden()
-    if reservation.status=='P':
+    if reservation.is_paid():
         redirect_url = reverse('reservation_info',kwargs={'reservation_id':reservation.pk})
         return HttpResponseRedirect(redirect_url)       
 
@@ -112,16 +120,17 @@ def info(request,reservation_id):
         return HttpResponseForbidden()
     return render(request,'reservations/info.html',{'reservation': reservation})
 
+@login_required
 def payment_success(request, reservation_id):
     reservation= get_object_or_404(Reservation, pk=reservation_id)
     if request.user != reservation.user:
         return HttpResponseForbidden()
 
     payment_info = json.loads(reservation.payment_confirmation)
-    print reservation.qty    
     data = {'reservation': reservation, 'card': payment_info['source']['brand'], 'last4':payment_info['source']['last4'] }
     return render(request,"reservations/payment_success.html",data)
 
+@login_required
 def get_reserved_dates(request, reservation_id):
     occuped={"used":Reservation.get_ocuped_dates(int(reservation_id))}
     return JsonResponse(occuped)
@@ -138,5 +147,11 @@ def delete(request, reservation_id):
     if reservation.paid:
         return HttpResponseForbidden()
     reservation.delete()
-    redirect_url = reverse('reservations_index')
+    redirect_url = reverse('reservations_list')
     return HttpResponseRedirect(redirect_url)
+
+@register.inclusion_tag('_info_tag.html')
+def info_tag(reservation):
+    return {'reservation':reservation,}
+
+

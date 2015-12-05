@@ -17,10 +17,6 @@ class ReservationForm(ModelForm):
             'date':forms.DateInput(attrs={'class':'datepicker'}, format="%m/%d/%Y"),
         }
 
-    def __init__(self, *args, **kwargs):
-        super(ModelForm, self).__init__(*args, **kwargs)
-        self.fields['qty'].max_value=12
-        self.fields['qty'].min_value=1
 
 
 class PaymentForm(forms.Form):

@@ -1,30 +1,34 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load reservations_tags %}
 {% block content %}
 
-    <h1>Payment</h1>
-    <h2>Reservation: {{ reservation }}</h2>
-    <div class="col-md-8"><div>
-    {{ reservation.value }} USD
-    {% if error_exist %}
-    <div class="error">Error: {{ error_msg }} </div>
-    {% endif %}
-    <form action="" method="POST">
-	{% csrf_token %}
-	<script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-		data-key="{{ stripe_key }}"
-		data-amount="{{ amount }}"
-		data-name="Demo Site"
-		data-description="{{reservation}} (${{ amount }})"
-		data-image="{% static "img/image.png" %}"
-		data-locale="auto">
-	</script>
-</form>
+<h1>Payment</h1>
+<h2>Reservation: {{ reservation.qty }} people for {{ reservation.date }}</h2>
+<div class="row">
+    <div class="col-md-8">
+        {% info_tag reservation %}
+	 <a class="btn btn-xs btn-warning" role="button" href="{% url 'reservation_edit' reservation_id=reservation.pk %}">Editar</a>
     </div>
-    <div>
-        <br/>
-<a class="btn btn-xs btn-warning" role="button" href="{% url 'reservation_info' reservation_id=reservation.pk %}">Pagar Luego</a>
+    <div class="col-md-4">
+        {% if error_exist %}
+        <div class="error">Error: {{ error_msg }} </div>
+        {% endif %}
+        <form action="" method="POST">
+	    {% csrf_token %}
+	        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+		        data-key="{{ stripe_key }}"
+		        data-amount="{{ amount }}"
+		        data-name="Demo Site"
+		        data-description="{{reservation}} (${{ amount }})"
+		        data-image="{% static "img/image.png" %}"
+		        data-locale="auto">
+	        </script>
+        </form>
+        <div>
+            <a class="btn btn-xs btn-warning" role="button" href="{% url 'reservation_info' reservation_id=reservation.pk %}">Pagar Luego</a>
+        </div>
     </div>
+</div>
 
-    </div>
 {% endblock %}

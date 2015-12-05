@@ -1,0 +1,36 @@
+<h3>Info: {{ reservation.qty }} people for {{ reservation.date }}</h3>
+<h3>Name on Reservation: {{ reservation.user.get_full_name }}</h3>
+<h3>Details</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Cost per Unit ({{ reservation.currency }})</th>
+            <th>Qty</th>
+            <th>Cost ({{ reservation.currency }})</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>From 1 to {{ reservation.qty_cut }} pax</td>
+            <td>{{ reservation.base_price|floatformat:2 }}</td>
+            <td>1</td>
+            <td>{{ reservation.base_price|floatformat:2 }}</td>
+        </tr>
+    {% if reservation.has_extra %}
+        <tr>
+            <td>Extra pax</td>
+            <td>{{ reservation.extra_price|floatformat:2 }}</td>
+            <td>{{ reservation.qty_dif }}</td>
+            <td>{{ reservation.price_dif|floatformat:2 }} </td>
+        </tr>
+    {% endif %}
+    <tfoot>
+        <tr>
+            <th colspan="3">Total</th>
+            <th>{{ reservation.value|floatformat:2 }}</th>
+        </tr>
+    </tfoot>
+    </tbody>
+</table>
+

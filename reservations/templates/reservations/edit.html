@@ -40,7 +40,8 @@
         {% if edit %}
             <a class="btn btn-xs btn-info" role="button" href="{% url "reservation_info" reservation_id=reservation.pk %}">Volver a la reserva</a>
         {% endif %}
-        <a class="btn btn-xs btn-info" role="button" href="{% url "reservations_index" %}">Volver a mis reservas</a>
+        <a class="btn btn-xs btn-info" role="button" href="{% url "reservations_list" %}">Volver a mis reservas</a>
+        <a class="btn btn-xs btn-info" role="button" href="{% url "index" %}">Volver al index</a>
     </div>
 </div>
 
