@@ -10,9 +10,6 @@ from django.shortcuts import get_object_or_404
 import json
 from datetime import datetime, timedelta
 import stripe
-from django import template
-
-register = template.Library()
 
 
 # Create your views here.
@@ -149,9 +146,5 @@ def delete(request, reservation_id):
     reservation.delete()
     redirect_url = reverse('reservations_list')
     return HttpResponseRedirect(redirect_url)
-
-@register.inclusion_tag('_info_tag.html')
-def info_tag(reservation):
-    return {'reservation':reservation,}
 
 
