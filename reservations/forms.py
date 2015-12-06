@@ -10,12 +10,15 @@ class UserForm(RegistrationForm):
         fields=RegistrationForm.Meta.fields+('first_name','last_name',)
 
 class ReservationForm(ModelForm):
+    date = forms.DateField(widget=forms.DateInput(attrs={'class':'datepicker', 'dateFormat': 'dd/mm/yy'}, format="%d/%m/%Y"),
+                                 input_formats=('%d/%m/%Y',))
     class Meta:
         model = Reservation
         fields = ['qty', 'date']
-        widgets = {
-            'date':forms.DateInput(attrs={'class':'datepicker'}, format="%m/%d/%Y"),
-        }
+        #widgets = {
+        #    'date':forms.DateInput(attrs={'class':'datepicker', 'dateFormat': 'dd/mm/yy'}, format="%d/%m/%Y"),
+        #}
+
 
 
 

@@ -20,7 +20,8 @@ function loadDates (url) {
             lastUpdated=new Date().getTime();
             $(document).ready(function() {
                 $('.datepicker').datepicker({
-                    beforeShowDay:test
+                    beforeShowDay:test,
+                    dateFormat:'dd/mm/yy'
                 });
             });
         }
