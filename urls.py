@@ -26,7 +26,8 @@ urlpatterns = [
     url(r'^', include('reservations.urls')),
     url(r'^accounts/register/$',  RegistrationView.as_view(form_class=UserForm), name='registration_register'),
     url(r'^accounts/', include('registration.backends.simple.urls')),
-
+    url(r'^accounts/', include('django.contrib.auth.urls')),
+    #url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$','password_reset_confirm'),
 
 
 ]

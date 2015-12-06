@@ -2,9 +2,9 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-    <a href="{% url 'reservations_list' %}">mis reservas</a><br/>
+    <a href="{% url 'reservations_list' %}">Mis reservas</a><br/>
     <a href="{% url "reservations_new" %}">Nueva Reservación</a><br/>
-    <a href="{% url "auth_login" %}">Log Out</a>
+    <a href="{% url "auth_logout" %}">Log Out</a>
     {% else %}
     Tiene que estar registrado para acceder al modulo de reservas
         <a class="btn btn-xs btn-primary" href="{% url "auth_login" %}">Log In</a> <br/>
