@@ -13,6 +13,7 @@ import stripe
 from paypal.standard.forms import PayPalPaymentsForm
 from base64 import b64encode
 import settings
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -168,9 +169,7 @@ def delete(request, reservation_id):
     redirect_url = reverse('reservations_list')
     return HttpResponseRedirect(redirect_url)
 
-
-
-@login_required
+@csrf_exempt
 def paypal_return(request):
     redirect_url = reverse('reservations_list')
     return HttpResponseRedirect(redirect_url)
