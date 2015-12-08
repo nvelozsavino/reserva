@@ -4,6 +4,7 @@ django-paypal==0.2.7
 django-registration-redux==1.2
 django-sslserver==0.16
 djrill==1.4.0
+requestes==0.0.1
 requests==2.8.1
 six==1.10.0
 sqlparse==0.1.18
