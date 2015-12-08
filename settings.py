@@ -149,7 +149,8 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, "static"),
 
 )
-DEBUG = True
+DEBUG = False
+MONITOR = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

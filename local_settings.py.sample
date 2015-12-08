@@ -1,6 +1,8 @@
 import os
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 DEBUG = True
+MONITOR=False
+
 
 DATABASE_FILE=os.path.join(PROJECT_ROOT, "db.sqlite3")
 print "Database: " + DATABASE_FILE

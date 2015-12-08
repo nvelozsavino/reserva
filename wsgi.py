@@ -20,5 +20,5 @@ application = get_wsgi_application()
 
 import monitor
 import settings
-if settings.DEBUG == False:
+if settings.MONITOR == True:
     monitor.start(interval=1.0)
