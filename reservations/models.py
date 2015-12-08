@@ -91,6 +91,7 @@ class Reservation(models.Model):
         super(Reservation, self).save(*args, **kwargs)
 
     def pay(self, confirmation):
+        print "pay " + confirmation
         if self.status != 'N':
             return False
         self.status='P'
@@ -173,6 +174,7 @@ def process_payment(sender, **kwargs):
             reservation_id= int(m.group(2))
             reservation=Reservation.objects().filter(pk=reservation_id)
             reservation.pay(ipn_obj.custom)
+            print "paid"
         except Reservation.DoesNotExist:
             print "not exist"
         except:
