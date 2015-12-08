@@ -9,10 +9,10 @@ def process_payment(sender, **kwargs):
     if ipn_obj.payment_status == ST_PP_COMPLETED:
         # Undertake some action depending upon `ipn_obj`.
         custom_code=b64decode(ipn_obj.custom)
-        print "Custom Code: " + ipn_obj.custmo + " decoded: " + custom_code
-        m=re.search('reservation=(\d*)',custom_code)
+        print "Custom Code: " + ipn_obj.custom + " decoded: " + custom_code
+        m=re.search('reservation=(.*),(\d*)',custom_code)
         try:
-            reservation_id= int(m.group(1))
+            reservation_id= int(m.group(2))
             reservation=Reservation.objects().filter(pk=reservation_id)
             reservation.pay()
         except Reservation.DoesNotExist:
