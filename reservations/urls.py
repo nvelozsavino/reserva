@@ -1,7 +1,8 @@
 # -*- coding: utf-8 *-*
 from django.conf.urls import patterns, url,include
 
-urlpatterns = patterns('reservations.views',
+urlpatterns = patterns(
+    'reservations.views',
     url('^$', 'index',name='index'),
     url('^reservation_list$', 'reservation_list',name='reservations_list'),
     url('^new$', 'edit',name='reservations_new'),
@@ -19,6 +20,7 @@ urlpatterns = patterns('reservations.views',
     url('^payment/cancel/','paypal_cancel_return', name='paypal_cancel_return'),
     # url('^login$','login_user', name='login'),
     # url('^logout$', 'logout_user', name='logout')
-
-
+    #url('^paypal/$','view_that_asks_for_money', name='give_me_the_money'),
+    #url('^paypal_notify/$', 'notify', name='payment_notify'),
+    #url('^pupu/$', 'paypalpayment', name='papalpaument'),
 )

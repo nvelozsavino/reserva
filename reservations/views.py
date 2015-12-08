@@ -81,7 +81,7 @@ def payment(request,reservation_id):
         "invoice": invoiceId,
         "notify_url": settings.SITE_URL + reverse('paypal-ipn'),
         "return_url": settings.SITE_URL + reverse('paypal_return'),
-        "cancel_return": settings.SITE_URL + reverse('paypal_cancel_return'),
+        "cancel_return": settings.SITE_URL + reverse('reservation_payment', kwargs={'reservation_id':reservation_id}),#paypal_cancel_return'),
         "custom": customId,  # Custom command to correlate to some function later (optional)
     }
 
@@ -170,9 +170,10 @@ def delete(request, reservation_id):
 
 
 
-
+@login_required
 def paypal_return(request):
-    pass
+    redirect_url = reverse('reservations_list')
+    return HttpResponseRedirect(redirect_url)
 
 def paypal_cancel_return(request):
     pass

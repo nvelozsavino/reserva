@@ -25,6 +25,7 @@
 		        data-locale="auto">
 	        </script>
         </form>
+          {% csrf_token %}
         <div>
             {{ paypal_form.render }}
 
