@@ -22,4 +22,5 @@ def process_payment(sender, **kwargs):
     else:
         print "fallo"
 
+
 valid_ipn_received.connect(process_payment)
