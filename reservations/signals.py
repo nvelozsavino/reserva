@@ -1,5 +1,5 @@
 from paypal.standard.models import ST_PP_COMPLETED
-from paypal.standard.ipn.signals import valid_ipn_received
+from paypal.standard.ipn.signals import valid_ipn_received, invalid_ipn_received
 from base64 import b64decode
 import re
 from models import Reservation
@@ -24,3 +24,4 @@ def process_payment(sender, **kwargs):
 
 
 valid_ipn_received.connect(process_payment)
+invalid_ipn_received.connect(process_payment)
