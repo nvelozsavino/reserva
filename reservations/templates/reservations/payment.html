@@ -9,6 +9,8 @@
     <div class="col-md-8">
         {% info_tag reservation %}
 	 <a class="btn btn-xs btn-warning" role="button" href="{% url 'reservation_edit' reservation_id=reservation.pk %}">Editar</a>
+	 <a class="btn btn-xs btn-default" role="button" href="{% url 'reservations_list' reservation_id=reservation.pk %}">Lista</a>
+
     </div>
     <div class="col-md-4">
         {% if error_exist %}

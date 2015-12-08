@@ -166,7 +166,7 @@ def delete(request, reservation_id):
     reservation=get_object_or_404(Reservation,pk=reservation_id)
     if request.user != reservation.user:
         return HttpResponseForbidden()
-    if reservation.paid:
+    if reservation.is_paid():
         return HttpResponseForbidden()
     reservation.delete()
     redirect_url = reverse('reservations_list')
