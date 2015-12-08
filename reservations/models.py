@@ -172,6 +172,7 @@ def process_payment(sender, **kwargs):
         m=re.search('reservation=(.*),(\d*)',custom_code)
         try:
             reservation_id= int(m.group(2))
+            print "id="+unicode(reservation_id)
             reservation=Reservation.objects().filter(pk=reservation_id)
             reservation.pay(ipn_obj.custom)
             print "paid"
