@@ -159,7 +159,7 @@ class Reservation(models.Model):
 from paypal.standard.models import ST_PP_COMPLETED
 from paypal.standard.ipn.signals import valid_ipn_received, invalid_ipn_received
 from base64 import b64decode
-import re
+import re, sys
 
 def process_payment(sender, **kwargs):
     print "Processing payment"
@@ -175,6 +175,8 @@ def process_payment(sender, **kwargs):
             reservation.pay()
         except Reservation.DoesNotExist:
             print "not exist"
+        except:
+            print "otro error" + sys.exc_info()[0]
 
 
     else:
