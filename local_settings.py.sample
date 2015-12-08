@@ -16,6 +16,8 @@ DATABASES = {
 }
 SITE_URL = 'https://localhost:8000'
 
-MANDRILL_API_KEY = "API_KEY"
+MANDRILL_API_KEY = "MANDRILL_API_KEY"
 EMAIL_BACKEND = "djrill.mail.backends.djrill.DjrillBackend"
 DEFAULT_FROM_EMAIL = "myemail@email.xxx"
+PAYPAL_TEST = True
+PAYPAL_RECEIVER_EMAIL = "yourpaypalemail@example.com"

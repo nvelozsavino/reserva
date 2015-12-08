@@ -10,7 +10,9 @@ from django.shortcuts import get_object_or_404
 import json
 from datetime import datetime, timedelta
 import stripe
-
+from paypal.standard.forms import PayPalPaymentsForm
+from base64 import b64encode
+import settings
 
 # Create your views here.
 
@@ -70,15 +72,34 @@ def payment(request,reservation_id):
         return HttpResponseRedirect(redirect_url)       
 
     stripe_key="pk_test_LTzee3NEdHl6M7MCaCJWWoch"
+    invoiceId= b64encode('invoice='+unicode(reservation.pk))
+    customId= b64encode('reservation='+unicode(reservation.pk))
+    paypal_dict = {
+        "business": settings.PAYPAL_RECEIVER_EMAIL,
+        "amount": reservation.value,
+        "item_name": unicode(reservation),
+        "invoice": invoiceId,
+        "notify_url": settings.SITE_URL + reverse('paypal-ipn'),
+        "return_url": settings.SITE_URL + reverse('paypal_return'),
+        "cancel_return": settings.SITE_URL + reverse('paypal_cancel_return'),
+        "custom": customId,  # Custom command to correlate to some function later (optional)
+    }
+
+    # Create the instance.
+    paypal_form = PayPalPaymentsForm(initial=paypal_dict)
+
+
+
     data={
         'reservation':reservation,
         'amount':int(reservation.value*100),
         'error_exist': False,
         'error_msg': '',
         'stripe_key': stripe_key,
+        'paypal_form':paypal_form,
     }
 
-    if request.method == 'POST':
+    if request.method == 'POST': #Stripe processing only
         print "Method is POST"
         form = PaymentForm(request.POST)
         if form.is_valid():
@@ -148,3 +169,10 @@ def delete(request, reservation_id):
     return HttpResponseRedirect(redirect_url)
 
 
+
+
+def paypal_return(request):
+    pass
+
+def paypal_cancel_return(request):
+    pass

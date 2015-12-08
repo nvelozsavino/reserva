@@ -26,6 +26,10 @@
 	        </script>
         </form>
         <div>
+            {{ paypal_form.render }}
+
+        </div>
+        <div>
             <a class="btn btn-xs btn-warning" role="button" href="{% url 'reservation_info' reservation_id=reservation.pk %}">Pagar Luego</a>
         </div>
     </div>
