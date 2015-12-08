@@ -73,8 +73,8 @@ def payment(request,reservation_id):
         return HttpResponseRedirect(redirect_url)       
 
     stripe_key="pk_test_LTzee3NEdHl6M7MCaCJWWoch"
-    invoiceId= b64encode('invoice='+unicode(reservation.pk))
-    customId= b64encode('reservation='+unicode(reservation.pk))
+    invoiceId= b64encode('invoice='+unicode(reservation.user)+","+unicode(reservation.pk))
+    customId= b64encode('reservation='+unicode(reservation.user)+","+unicode(reservation.pk))
     print "InvoiceId=" + invoiceId
     print "CustomId=" + customId
 
