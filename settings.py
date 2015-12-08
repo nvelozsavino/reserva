@@ -154,6 +154,10 @@ MONITOR = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+ADMINS =  (
+    'nicolas.veloz.savino@gmail.com',
+)
+
 ##################
 # LOCAL SETTINGS #
 ##################
