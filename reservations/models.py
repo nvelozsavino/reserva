@@ -172,7 +172,7 @@ def process_payment(sender, **kwargs):
         try:
             reservation_id= int(m.group(2))
             reservation=Reservation.objects().filter(pk=reservation_id)
-            reservation.pay()
+            reservation.pay(ipn_obj.custom)
         except Reservation.DoesNotExist:
             print "not exist"
         except:
