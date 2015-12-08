@@ -75,6 +75,9 @@ def payment(request,reservation_id):
     stripe_key="pk_test_LTzee3NEdHl6M7MCaCJWWoch"
     invoiceId= b64encode('invoice='+unicode(reservation.pk))
     customId= b64encode('reservation='+unicode(reservation.pk))
+    print "InvoiceId=" + invoiceId
+    print "CustomId=" + customId
+
     paypal_dict = {
         "business": settings.PAYPAL_RECEIVER_EMAIL,
         "amount": reservation.value,
