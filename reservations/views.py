@@ -174,13 +174,14 @@ def delete(request, reservation_id):
     return HttpResponseRedirect(redirect_url)
 
 @csrf_exempt
-#@login_required
+@login_required
 def paypal_return(request, reservation_id):
-    #reservation=get_object_or_404(Reservation, pk=reservation_id)
-    #if request.user != reservation.user:
-    #    return HttpResponseForbidden()
+    reservation=get_object_or_404(Reservation, pk=reservation_id)
+    if request.user != reservation.user:
+        return HttpResponseForbidden()
     if request.method=='POST':
-        return HttpResponse("POST")
+        payment_id = request.POST.get()
+        return HttpResponse(payment_id)
     else:
         return HttpResponse("algo")
     #redirect_url = reverse('reservations_list')
