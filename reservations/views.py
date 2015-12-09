@@ -180,7 +180,7 @@ def paypal_return(request, reservation_id):
     if request.user != reservation.user:
         return HttpResponseForbidden()
     if request.method=='POST':
-        payment_id = request.POST.get('payment_id','')
+        payment_id = request.POST.get('auth_id',"no existe")
         return HttpResponse(payment_id)
     else:
         return HttpResponse("algo")
