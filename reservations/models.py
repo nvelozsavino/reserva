@@ -12,6 +12,7 @@ class Reservation(models.Model):
         ('N', u'Pendiente'),
         ('P', u'Pagado'),
         ('C', u'Cancelado'),
+        ('D', u'Esperando confirmación')
     )
 
     RESERVATION_CURRENCY_CHOICES = (
@@ -61,6 +62,11 @@ class Reservation(models.Model):
 
     def is_pending(self):
         if self.status=='N':
+            return True
+        return False
+
+    def is_payment_pending(self):
+        if self.status=='D':
             return True
         return False
 
@@ -158,7 +164,7 @@ class Reservation(models.Model):
 
 
 from paypal.standard.models import ST_PP_COMPLETED
-from paypal.standard.ipn.signals import valid_ipn_received, invalid_ipn_received
+from paypal.standard.ipn.signals import * #valid_ipn_received, invalid_ipn_received
 from base64 import b64decode
 import re, sys
 
@@ -170,6 +176,7 @@ def process_payment(sender, **kwargs):
         custom_code=b64decode(ipn_obj.custom)
         print "Custom Code: " + ipn_obj.custom + " decoded: " + custom_code
         m=re.search('reservation=(.*),(\d*)',custom_code)
+        print "auth id = "
         try:
             reservation_id= int(m.group(2))
             print "id="+unicode(reservation_id)

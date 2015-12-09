@@ -84,9 +84,10 @@ def payment(request,reservation_id):
         "item_name": unicode(reservation),
         "invoice": invoiceId,
         "notify_url": settings.SITE_URL + reverse('paypal-ipn'),
-        "return_url": settings.SITE_URL + reverse('paypal_return'),
+        "return_url": settings.SITE_URL + reverse('paypal_return', kwargs={'reservation_id':reservation_id}),
         "cancel_return": settings.SITE_URL + reverse('reservation_payment', kwargs={'reservation_id':reservation_id}),#paypal_cancel_return'),
         "custom": customId,  # Custom command to correlate to some function later (optional)
+        "rm":2,
     }
 
     # Create the instance.
@@ -163,7 +164,7 @@ def cancel_pending_reservations(request):
 
 @login_required
 def delete(request, reservation_id):
-    reservation=get_object_or_404(Reservation,pk=reservation_id)
+    reservation=get_object_or_404(Reservation, pk=reservation_id)
     if request.user != reservation.user:
         return HttpResponseForbidden()
     if reservation.is_paid():
@@ -173,9 +174,17 @@ def delete(request, reservation_id):
     return HttpResponseRedirect(redirect_url)
 
 @csrf_exempt
-def paypal_return(request):
-    redirect_url = reverse('reservations_list')
-    return HttpResponseRedirect(redirect_url)
+#@login_required
+def paypal_return(request, reservation_id):
+    #reservation=get_object_or_404(Reservation, pk=reservation_id)
+    #if request.user != reservation.user:
+    #    return HttpResponseForbidden()
+    if request.method=='POST':
+        return HttpResponse("POST")
+    else:
+        return HttpResponse("algo")
+    #redirect_url = reverse('reservations_list')
+    #return HttpResponseRedirect(redirect_url)
 
 def paypal_cancel_return(request):
     pass

@@ -16,7 +16,7 @@ urlpatterns = patterns(
     url('^cancel_pending/$','cancel_pending_reservations',name='reservation_cancel_pending'),
     url(r'^payment/paypal/', include('paypal.standard.ipn.urls')),
     # url('^payment/ipn/','paypal_ipn', name='paypal_ipn'),
-    url('^payment/return/','paypal_return', name='paypal_return'),
+    url('^payment/return/(?P<reservation_id>(\d+))/$','paypal_return', name='paypal_return'),
     url('^payment/cancel/','paypal_cancel_return', name='paypal_cancel_return'),
     # url('^login$','login_user', name='login'),
     # url('^logout$', 'logout_user', name='logout')

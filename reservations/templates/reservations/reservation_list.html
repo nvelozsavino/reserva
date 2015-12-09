@@ -36,9 +36,11 @@ Hola {{user.first_name }}
 
                         {% if reservation.status == 'P' %}
                             <a class="btn btn-xs btn-info" role="button" href="{% url 'payment_success' reservation_id=reservation.pk %}">Invoice</a>
-                        {% else %}
+                        {% elif reservation.status == 'N' %}
                             <a class="btn btn-xs btn-primary" role="button" href="{% url 'reservation_payment' reservation_id=reservation.pk %}">Pagar</a>
                             <a class="btn btn-xs btn-warning" role="button" href="{% url 'reservation_edit' reservation_id=reservation.pk %}">Editar</a>
+                            <a class="btn btn-xs btn-danger" role="button" href="{% url 'reservation_delete' reservation_id=reservation.pk %}">Eliminar</a>
+                        {% elif reservation.status == 'C' %}
                             <a class="btn btn-xs btn-danger" role="button" href="{% url 'reservation_delete' reservation_id=reservation.pk %}">Eliminar</a>
                         {% endif %}
                     </td>
