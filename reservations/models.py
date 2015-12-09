@@ -171,12 +171,13 @@ import re, sys
 def process_payment(sender, **kwargs):
     print "Processing payment"
     ipn_obj = sender
+
     if ipn_obj.payment_status == ST_PP_COMPLETED:
         # Undertake some action depending upon `ipn_obj`.
         custom_code=b64decode(ipn_obj.custom)
         print "Custom Code: " + ipn_obj.custom + " decoded: " + custom_code
         m=re.search('reservation=(.*),(\d*)',custom_code)
-        print "auth_id = "+ ipn_obj.auth_id
+        print "txn_id = "+ ipn_obj.txn_id
         try:
             reservation_id= int(m.group(2))
             print "id="+unicode(reservation_id)
