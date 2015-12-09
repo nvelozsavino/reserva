@@ -164,7 +164,7 @@ class Reservation(models.Model):
 
 
 from paypal.standard.models import ST_PP_COMPLETED
-from paypal.standard.ipn.signals import * #valid_ipn_received, invalid_ipn_received
+from paypal.standard.ipn.signals import valid_ipn_received, invalid_ipn_received
 from base64 import b64decode
 import re, sys
 
@@ -176,7 +176,7 @@ def process_payment(sender, **kwargs):
         custom_code=b64decode(ipn_obj.custom)
         print "Custom Code: " + ipn_obj.custom + " decoded: " + custom_code
         m=re.search('reservation=(.*),(\d*)',custom_code)
-        print "auth id = "
+        print "auth_id = "+ ipn_obj.auth_id
         try:
             reservation_id= int(m.group(2))
             print "id="+unicode(reservation_id)
