@@ -189,12 +189,18 @@ def delete(request, reservation_id):
 @csrf_exempt
 @login_required
 def paypal_return(request, reservation_id):
+    print "****PAYPAL RETURN****"
     reservation=get_object_or_404(Reservation, pk=reservation_id)
     if request.user != reservation.user:
         return HttpResponseForbidden()
     if request.method=='POST':
-        if request.POST.get('payment_status', 'null') == "Completed":
-            reservation.status='D'
+        if request.POST.get('payment_status') == "Completed":
+            if reservation.is_paid():
+                print "ipn ya llego"
+            else:
+                reservation.status='D'
+                print "reservation D"
+
         print 'txn_id = ' + request.POST.get('txn_id', "no existe")
         print 'payment status = ' + 'X' + request.POST.get('payment_status', 'no existe') + 'X'
         print 'invoice_id = ' +  request.POST.get('invoice', 'No hay')
