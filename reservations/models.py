@@ -195,7 +195,7 @@ def process_payment(sender, **kwargs):
                 'txn_id' : ipn_obj.txn_id,
                 'invoice': ipn_obj.invoice,
             }
-            reservation.pay(json.dump(charge),'P')
+            reservation.pay(confirmation=json.dumps(charge),choice='P')
             print "paid"
         except Reservation.DoesNotExist:
             print "not exist"
