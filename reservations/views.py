@@ -182,6 +182,8 @@ def paypal_return(request, reservation_id):
     if request.method=='POST':
         print 'txn_id = ' + request.POST.get('txn_id',"no existe")
         print 'payment status = ' + request.POST.get('payment_status','no existe')
+        print 'invoice_id' + request.POST.get('invoice','No hay')
+        print 'parent_txn_id' +request.POST.get('parent_txn_id','No hay')
     else:
         print 'method not POST'
         #return HttpResponse("algo")

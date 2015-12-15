@@ -98,7 +98,7 @@ class Reservation(models.Model):
 
     def pay(self, confirmation):
         print "pay " + confirmation
-        if self.status != 'N':
+        if self.status == 'P' or self.status == 'C':
             return False
         self.status='P'
         self.payment_confirmation=confirmation
