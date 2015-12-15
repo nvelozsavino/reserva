@@ -193,6 +193,8 @@ def paypal_return(request, reservation_id):
     if request.user != reservation.user:
         return HttpResponseForbidden()
     if request.method=='POST':
+        if request.POST.get('payment_status','null') == 'Completed':
+            reservation.status='D'
         print 'txn_id = ' + request.POST.get('txn_id',"no existe")
         print 'payment status = ' + request.POST.get('payment_status','no existe')
         print 'invoice_id = ' + request.POST.get('invoice','No hay')
