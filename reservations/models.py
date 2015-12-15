@@ -15,6 +15,12 @@ class Reservation(models.Model):
         ('D', u'Esperando confirmación')
     )
 
+    RESERVATION_PAYMENT_CHOICES = {
+        ('S', u'Stripe'),
+        ('P', u'PayPal'),
+        ('N', u'None'),
+    }
+
     RESERVATION_CURRENCY_CHOICES = (
         ('USD',u'USD'),
     )
@@ -36,6 +42,7 @@ class Reservation(models.Model):
     qty = models.IntegerField(default=RESERVATION_QTY_CUT, verbose_name=u'Cantidad de personas',validators=[MaxValueValidator(12),MinValueValidator(1)])
     # place = models.ForeignKey(Place)
     status = models.CharField(max_length=1, choices=RESERVATION_STATUS_CHOICES, default='N', verbose_name=u'Status')
+    payment_choice = models.CharField(max_length=1, choices=RESERVATION_PAYMENT_CHOICES, default='N', verbose_name=u'Payment Choice')
     value = models.FloatField(null=True, blank=True, verbose_name=u'Precio')
     reservation_date = models.DateTimeField(auto_now=True, verbose_name=u'Fecha de creación')
     payment_date = models.DateTimeField(null=True, blank=True, verbose_name=u'Fecha del pago')
@@ -96,10 +103,11 @@ class Reservation(models.Model):
                 self.value=self.base_price+(self.extra_price*(self.qty-self.qty_cut))
         super(Reservation, self).save(*args, **kwargs)
 
-    def pay(self, confirmation):
+    def pay(self, confirmation, choice):
         print "pay " + confirmation
-        if self.status == 'P' or self.status == 'C':
+        if self.status == 'P' or self.status == 'C' or choice=='N':
             return False
+        self.payment_choice=choice
         self.status='P'
         self.payment_confirmation=confirmation
         self.payment_date=datetime.now()
@@ -183,7 +191,11 @@ def process_payment(sender, **kwargs):
             print "id="+unicode(reservation_id)
             reservation=Reservation.objects.get(id=reservation_id)
             print unicode(reservation)
-            reservation.pay(ipn_obj.txn_id)
+            charge = {
+                'txn_id' : ipn_obj.txn_id,
+                'invoice': ipn_obj.invoice,
+            }
+            reservation.pay(json.dump(charge),'P')
             print "paid"
         except Reservation.DoesNotExist:
             print "not exist"

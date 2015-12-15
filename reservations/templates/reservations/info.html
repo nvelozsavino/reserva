@@ -12,7 +12,7 @@
             {% if reservation.status == 'P' %}
                 Pagada.</div>
                 <div><br/><a class="btn btn-xs btn-info" role="button" href="{% url 'payment_success' reservation_id=reservation.pk %}">Invoice</a></div>
-            {% else %}
+            {% elif reservation.status == 'N' %}
                 Pendiente.</div>
                 <div>Su reserva fue realizada el dia {{ reservation.reservation_date }}<br/>dispone de 24 horas a partir de esta fecha para realizar el pago o su reserva sera cancelada</div>
 
@@ -22,8 +22,14 @@
                 <a class="btn btn-xs btn-primary" role="button" href="{% url 'reservation_payment' reservation_id=reservation.pk %}">Pagar Ahora</a>
                 <a class="btn btn-xs btn-warning" role="button" href="{% url 'reservation_edit' reservation_id=reservation.pk %}">Editar</a>
                 <a class="btn btn-xs btn-danger" role="button" href="{% url 'reservation_delete' reservation_id=reservation.pk %}">Eliminar</a></div>
+            {% elif reservation.status == 'D' %}
+                Pendiente Confirmación de pago
+                <div>Su reserva fue realizada el dia {{ reservation.reservation_date }}<br/>
+                Pronto se recibirá la confirmación del pago...
+                </div>
 
 
-		{% endif %}
+                <div>
+		    {% endif %}
     <div><br/><a class="btn btn-xs btn-info" role="button" href="{% url 'reservations_list' %}">Volver</a></div>
 {% endblock %}

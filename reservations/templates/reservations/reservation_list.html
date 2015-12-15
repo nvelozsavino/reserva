@@ -26,10 +26,12 @@ Hola {{user.first_name }}
                     <td>
                         {% if reservation.status == 'P' %}
                             Pagada
-                        {% elif reservation.status == 'N'%}
+                        {% elif reservation.status == 'N' %}
                             Pendiente
-                        {% else %}
+                        {% elif reservation.status == 'C' %}
                             Cancelada
+                        {% elif reservation.status == 'D' %}
+                            Pendiente Confirmación de Pago
                         {% endif %}
                     </td>
                     <td>
@@ -42,6 +44,8 @@ Hola {{user.first_name }}
                             <a class="btn btn-xs btn-danger" role="button" href="{% url 'reservation_delete' reservation_id=reservation.pk %}">Eliminar</a>
                         {% elif reservation.status == 'C' %}
                             <a class="btn btn-xs btn-danger" role="button" href="{% url 'reservation_delete' reservation_id=reservation.pk %}">Eliminar</a>
+                        {% elif reservation.status == 'D' %}
+                            <a class="btn btn-xs btn-info" role="button" href="{% url 'reservation_info' reservation_id=reservation.pk %}">Ver</a>
                         {% endif %}
                     </td>
                 </tr>

@@ -125,7 +125,7 @@ def payment(request,reservation_id):
                 print "Error: exception " + unicode(e)
             if card_error is False:
                 print "No Error" 
-                reservation.pay(json.dumps(charge))
+                reservation.pay(confirmation=json.dumps(charge),choice='S')
                 redirect_url = reverse('payment_success',kwargs={'reservation_id':reservation.pk})
                 return HttpResponseRedirect(redirect_url)                 
             else:
@@ -148,9 +148,13 @@ def payment_success(request, reservation_id):
     reservation= get_object_or_404(Reservation, pk=reservation_id)
     if request.user != reservation.user:
         return HttpResponseForbidden()
+    if reservation.payment_choice=='S':
+        payment_info = json.loads(reservation.payment_confirmation)
+        data = {'reservation': reservation, 'card': payment_info['source']['brand'], 'last4':payment_info['source']['last4'] }
+    elif reservation.payment_choice == 'P':
+        payment_info = json.loads(reservation.payment_confirmation)
+        data = {'reservation': reservation, 'invoice': payment_info['invoice'], 'txn_id': payment_info['txn_id']}
 
-    payment_info = json.loads(reservation.payment_confirmation)
-    data = {'reservation': reservation, 'card': payment_info['source']['brand'], 'last4':payment_info['source']['last4'] }
     return render(request,"reservations/payment_success.html",data)
 
 @login_required
@@ -182,8 +186,8 @@ def paypal_return(request, reservation_id):
     if request.method=='POST':
         print 'txn_id = ' + request.POST.get('txn_id',"no existe")
         print 'payment status = ' + request.POST.get('payment_status','no existe')
-        print 'invoice_id' + request.POST.get('invoice','No hay')
-        print 'parent_txn_id' +request.POST.get('parent_txn_id','No hay')
+        print 'invoice_id = ' + request.POST.get('invoice','No hay')
+        print 'parent_txn_id = ' +request.POST.get('parent_txn_id','No hay')
     else:
         print 'method not POST'
         #return HttpResponse("algo")
