@@ -198,7 +198,7 @@ def paypal_return(request, reservation_id):
             if reservation.is_paid():
                 print "ipn ya llego"
             else:
-                reservation.status='D'
+                reservation.set_pending_payment()
                 print "reservation D"
 
         print 'txn_id = ' + request.POST.get('txn_id', "no existe")

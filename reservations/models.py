@@ -115,6 +115,11 @@ class Reservation(models.Model):
         self.send_payment_mail()
         return True
 
+    def set_pending_payment(self):
+        self.status='D'
+        self.save()
+        return True
+
     def cancel(self):
         if self.status != 'N':
             return False
