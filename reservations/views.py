@@ -155,8 +155,13 @@ def payment_success(request, reservation_id):
         payment_info = json.loads(reservation.payment_confirmation)
         data = {'reservation': reservation, 'invoice': payment_info['invoice'], 'txn_id': payment_info['txn_id']}
     else:
-        payment_info = json.loads(reservation.payment_confirmation)
-        data = {'reservation': reservation, 'card': payment_info['source']['brand'], 'last4':payment_info['source']['last4'] }
+        try:
+            payment_info = json.loads(reservation.payment_confirmation)
+            data = {'reservation': reservation, 'card': payment_info['source']['brand'], 'last4':payment_info['source']['last4'] }
+        except:
+            data = {'reservation': reservation, 'card': 'no card', 'last4':'xxxx' }
+
+
 
 
     return render(request,"reservations/payment_success.html",data)
