@@ -181,7 +181,7 @@ def paypal_return(request, reservation_id):
         return HttpResponseForbidden()
     if request.method=='POST':
         print 'txn_id = ' + request.POST.get('txn_id',"no existe")
-
+        print 'payment status = ' + request.POST.get('payment_status','no existe')
     else:
         print 'method not POST'
         #return HttpResponse("algo")
