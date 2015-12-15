@@ -183,7 +183,7 @@ def process_payment(sender, **kwargs):
             print "id="+unicode(reservation_id)
             reservation=Reservation.objects.get(id=reservation_id)
             print unicode(reservation)
-            reservation.pay(ipn_obj.custom)
+            reservation.pay(ipn_obj.txn_id)
             print "paid"
         except Reservation.DoesNotExist:
             print "not exist"
