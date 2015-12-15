@@ -15,7 +15,8 @@
     {% elif reservation.payment_choice == 'P' %}
     <div>Invoice: {{ invoice }}</div>
     <div>txn_id: {{ txn_id }}</div>
-
+    {% else %}
+    <div>Card: {{card}} ending in {{last4}}</div>
     {% endif %}
     <a class="btn btn-xs btn-info" role="button" href="{% url 'reservation_info' reservation_id=reservation.pk %}">Volver</a>
 
